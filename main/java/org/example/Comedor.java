@@ -17,7 +17,9 @@ public class Comedor {
     }
 
     public void depositarComida(Humano hu){
+        System.out.println("Comida RESTANTE: "+comidaDisponible.toString());
         if(hu.llevaComida()){
+            comidaDisponible.incrementAndGet();
             comidaDisponible.incrementAndGet();
             hu.setComida(false);
             comidaEsperar.lock();

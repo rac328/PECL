@@ -30,5 +30,6 @@ public class ZonaDescanso {
         int eleccion = (int) (Math.random()*0+3);
         listaHumanos.remove(hu);
         arrayTunel[eleccion].irExterior(hu);
+        arrayTunel[eleccion].venirDelExterior(hu);
     }
 }

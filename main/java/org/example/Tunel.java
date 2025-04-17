@@ -44,7 +44,6 @@ public class Tunel {
             pasar.release();
             zonaRiesgo.entrarHumano(hu);
             sleep((long) (Math.random()*3000+5000));
-            zonaRiesgo.salirHumano(hu);
         } catch (InterruptedException | BrokenBarrierException e) {
             throw new RuntimeException(e);
         }
@@ -52,12 +51,16 @@ public class Tunel {
 
     public void venirDelExterior(Humano hu){
         try {
+            zonaRiesgo.salirHumano(hu);
+            System.out.println("Vuelve el humano" + hu.getIdHumano());
             listaRegresar.add(hu);
             pasar.acquire();
             listaRegresar.remove(hu);
             sleep(1000);
             pasar.release();
+            candado.lock();
             condicion.signal();
+            candado.unlock();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
