@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.Thread.sleep;
 
@@ -14,6 +16,8 @@ public class Tunel {
     private ArrayList listaPasando = new ArrayList<Humano>();
     private ArrayList listaRegresar = new ArrayList<Humano>();
     private ZonaRiesgo zonaRiesgo;
+    private ReentrantLock candado = new ReentrantLock();
+    private Condition condicion = candado.newCondition();
 
     public Tunel(ZonaRiesgo zr){
         zonaRiesgo = zr;
@@ -24,6 +28,13 @@ public class Tunel {
             esperarAntes.acquire();
             listaPasar.add(hu);
             esperar.await();
+
+            candado.lock();
+            while(listaRegresar.size()>0){
+                condicion.await();
+            }
+            candado.unlock();
+
             pasar.acquire();
             esperarAntes.release();
             listaPasar.remove(hu);
@@ -35,6 +46,19 @@ public class Tunel {
             sleep((long) (Math.random()*3000+5000));
             zonaRiesgo.salirHumano(hu);
         } catch (InterruptedException | BrokenBarrierException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void venirDelExterior(Humano hu){
+        try {
+            listaRegresar.add(hu);
+            pasar.acquire();
+            listaRegresar.remove(hu);
+            sleep(1000);
+            pasar.release();
+            condicion.signal();
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
