@@ -41,10 +41,5 @@ public class Main {
                     }
                 }
             }
-    while (true){
-        for(int i=0;i<4;i++){
-        arrayZonaRiesgo[i].getListaHumanos().toString();
-    }
-    }
     }
 }
