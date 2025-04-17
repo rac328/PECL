@@ -25,6 +25,7 @@ public class ZonaRiesgo {
 
     public void salirHumano(Humano hu){
         listaHumanos.remove(hu);
+        hu.setComida(true);
     }
 
     public void entrarZombie(Zombie zo){

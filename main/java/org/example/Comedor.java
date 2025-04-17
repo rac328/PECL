@@ -17,14 +17,16 @@ public class Comedor {
     }
 
     public void depositarComida(Humano hu){
-        System.out.println("Comida RESTANTE: "+comidaDisponible.toString());
+        //System.out.println("Comida RESTANTE: "+comidaDisponible.toString());
         if(hu.llevaComida()){
             comidaDisponible.incrementAndGet();
             comidaDisponible.incrementAndGet();
+            System.out.println("Comida RESTANTE: "+comidaDisponible.toString());
             hu.setComida(false);
             comidaEsperar.lock();
             noComida.signal();
             comidaEsperar.unlock();
+            
         }
     }
 

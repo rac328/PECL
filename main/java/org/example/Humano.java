@@ -36,6 +36,13 @@ public class Humano extends Thread {
         llevaComida = bool;
     }
 
+    public boolean getMarcado(){
+        return marcado;
+    }
+    public void setMarcado(boolean bool){
+        marcado = bool;
+    }
+    
     public void run(){
         try {
             while (true) {
@@ -46,6 +53,9 @@ public class Humano extends Thread {
                 comedor.depositarComida(this);
                 //zonaDescanso.descansar();
                 comedor.comer();
+                if (marcado){
+                    //zonaDescanso.descansar();
+                }
 
             }
         }
