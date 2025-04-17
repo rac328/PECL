@@ -33,7 +33,7 @@ public class Main {
                             System.out.println(idHumanos[0]+idHumanos[1]+idHumanos[2]+idHumanos[3]+idHumanos[4]);
                             new Humano(idHumanos, comedor, arrayTunel, zonaDescanso).start();
                             try {
-                                sleep(2000);
+                                sleep(500+(int)(1500*Math.random()));
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
