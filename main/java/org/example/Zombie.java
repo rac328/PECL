@@ -12,6 +12,10 @@ public class Zombie extends Thread {
         arrayZonaRiesgo = zr;
     }
 
+    public String[] getIdZombie(){
+        return id;
+    }
+    
     public void run() {
         try {
             while (true) {
@@ -37,6 +41,7 @@ public class Zombie extends Thread {
                 String[] id = hu.getIdHumano();
                 matarHumano(hu);
                 new Zombie(id, 0, arrayZonaRiesgo).start();
+                contadorMuertes++;
             } else {
                 hu.setMarcado(true);
             }
@@ -47,6 +52,7 @@ public class Zombie extends Thread {
     }
     
     public void matarHumano(Humano hu){
+        System.out.println("Humano "+hu.getIdHumano()+" ha muerto a manos del zombie "+this.getIdZombie());
         hu.interrupt();
     }
     

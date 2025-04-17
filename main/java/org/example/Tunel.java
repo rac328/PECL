@@ -45,7 +45,7 @@ public class Tunel {
             zonaRiesgo.entrarHumano(hu);
             sleep((long) (Math.random()*3000+5000));
         } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
+            System.out.println(hu.getIdHumano()+" se murioooo");
         }
     }
 
