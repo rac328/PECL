@@ -39,7 +39,7 @@ public class Humano extends Thread {
     public void run(){
         try {
             while (true) {
-
+                zonaDescanso.entrarZonaDescanso(this);
                 zonaDescanso.prepararse();
                 zonaDescanso.vidaFueraRefugio(this);
                 sleep(1);
