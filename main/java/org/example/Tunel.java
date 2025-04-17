@@ -30,7 +30,7 @@ public class Tunel {
             esperar.await();
 
             candado.lock();
-            while(listaRegresar.size()>0){
+            while(!listaRegresar.isEmpty()){
                 condicion.await();
             }
             candado.unlock();
