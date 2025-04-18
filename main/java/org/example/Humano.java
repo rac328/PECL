@@ -19,9 +19,16 @@ public class Humano extends Thread {
         zonaDescanso = zd;
     }
 
-
-    public String[] getIdHumano() {
+    public String[] getIdHumano(){
         return id;
+    }
+
+    public String getIdHumanoStr() {
+        String str = "";
+        for (int i = 0; i<5; i++){
+            str += id[i];
+        }
+        return str;
     }
 
     public void setIdHumano(String[] id) {

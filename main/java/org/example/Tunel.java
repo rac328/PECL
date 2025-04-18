@@ -52,7 +52,7 @@ public class Tunel {
     public void venirDelExterior(Humano hu){
         try {
             zonaRiesgo.salirHumano(hu);
-            System.out.println("Vuelve el humano" + hu.getIdHumano());
+            System.out.println("Vuelve el humano" + hu.getIdHumanoStr());
             listaRegresar.add(hu);
             pasar.acquire();
             listaRegresar.remove(hu);

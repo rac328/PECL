@@ -12,8 +12,12 @@ public class Zombie extends Thread {
         arrayZonaRiesgo = zr;
     }
 
-    public String[] getIdZombie(){
-        return id;
+    public String getIdZombie(){
+        String str = "";
+        for (int i = 0; i<5; i++){
+            str += id[i];
+        }
+        return str;
     }
     
     public void run() {
@@ -43,6 +47,7 @@ public class Zombie extends Thread {
                 new Zombie(id, 0, arrayZonaRiesgo).start();
                 contadorMuertes++;
             } else {
+                System.out.println("Humano "+hu.getIdHumanoStr()+" ha sido marcado por el zombie "+this.getIdZombie());
                 hu.setMarcado(true);
             }
             sleep(500 + (int) (1000 * Math.random()));
@@ -52,7 +57,7 @@ public class Zombie extends Thread {
     }
     
     public void matarHumano(Humano hu){
-        System.out.println("Humano "+hu.getIdHumano()+" ha muerto a manos del zombie "+this.getIdZombie());
+        System.out.println("Humano "+hu.getIdHumanoStr()+" ha muerto a manos del zombie "+this.getIdZombie());
         hu.interrupt();
     }
     

@@ -21,6 +21,13 @@ public class Main {
 
         ZonaDescanso zonaDescanso = new ZonaDescanso(arrayTunel);
 
+        //creacion zombie
+        idZombie[0] = "Z";
+        for (int i = 1; i<=4; i++){
+            idZombie[i]="0";
+        }
+        new Zombie(idZombie, 0, arrayZonaRiesgo).start();
+        
         //Creacción de los humanos
         idHumanos[0] = "H";
         for (int t = 0; t < 10; t++) {
@@ -44,11 +51,6 @@ public class Main {
             }
         }
         
-        //creacion zombie
-        idZombie[0] = "Z";
-        for (int i = 1; i<=4; i++){
-            idZombie[i]="0";
-        }
-        new Zombie(idZombie, 0, arrayZonaRiesgo).start();
+        
     }
 }
