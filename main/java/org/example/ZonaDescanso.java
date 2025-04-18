@@ -5,31 +5,46 @@ import java.util.ArrayList;
 import static java.lang.Thread.sleep;
 
 public class ZonaDescanso {
-
-    private Tunel[] arrayTunel;
-    private ArrayList listaHumanos = new ArrayList<Humano>();
-
-    public ZonaDescanso(Tunel[] at){
-        arrayTunel = at;
-
+    private ArrayList<Humano> listaDescansando = new ArrayList<>();
+   
+    public ZonaDescanso(){
+    
     }
-
-    public void entrarZonaDescanso(Humano hu){
-        listaHumanos.add(hu);
-    }
-
-    public void prepararse(){
-        try {
-            sleep((long) (Math.random()*1000+2000));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    
+    public void descansarVuelta(Humano hu){
+        if(!hu.isMuerto()){
+            try{
+            synchronized(this){
+                listaDescansando.add(hu);
+                System.out.println("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
+            }
+            sleep(2000+(int)(2000*Math.random()));
+            synchronized(this){
+                listaDescansando.remove(hu);
+                System.out.println("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
+            }
+        }catch(InterruptedException ie){
+            System.out.println("Error descansar al volver humano " + hu.getIdHumanoStr());
+        }
+        }else{
+            return;
         }
     }
-
-    public void vidaFueraRefugio(Humano hu){
-        int eleccion = (int) (Math.random()*0+3);
-        listaHumanos.remove(hu);
-        arrayTunel[eleccion].irExterior(hu);
-        arrayTunel[eleccion].venirDelExterior(hu);
+    
+    public void descansarMarcado(Humano hu){
+        try{
+            synchronized(this){
+                listaDescansando.add(hu);
+                System.out.println("Humano marcado " + hu.getIdHumanoStr() + " está descansando para curarse.");
+                hu.setMarcado(false);
+            }
+            sleep(3000+(int)(2000*Math.random()));
+            synchronized(this){
+                listaDescansando.remove(hu);
+                System.out.println("Humano " + hu.getIdHumanoStr() + " se ha curado y ya no esta marcado.");
+            }
+        }catch(InterruptedException ie){
+            System.out.println("Error descansar humano marcado " + hu.getIdHumanoStr());
+        }
     }
 }

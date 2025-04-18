@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -9,9 +10,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import static java.lang.Thread.sleep;
 
 public class Tunel {
+
     private Semaphore esperarAntes = new Semaphore(3, true);
     private CyclicBarrier esperar = new CyclicBarrier(3);
-    private Semaphore pasar = new Semaphore(1,true);
+    private Semaphore pasar = new Semaphore(1, true);
     private ArrayList listaPasar = new ArrayList<Humano>();
     private ArrayList listaPasando = new ArrayList<Humano>();
     private ArrayList listaRegresar = new ArrayList<Humano>();
@@ -19,54 +21,68 @@ public class Tunel {
     private ReentrantLock candado = new ReentrantLock();
     private Condition condicion = candado.newCondition();
 
-    public Tunel(ZonaRiesgo zr){
+    public Tunel(ZonaRiesgo zr) {
         zonaRiesgo = zr;
     }
 
-    public void irExterior(Humano hu){
+    public void irExterior(Humano hu) {
         try {
             esperarAntes.acquire();
             listaPasar.add(hu);
             esperar.await();
 
             candado.lock();
-            while(!listaRegresar.isEmpty()){
-                condicion.await();
-            }
-            candado.unlock();
+            try {
+                while (!listaRegresar.isEmpty()) {
+                    condicion.await();
+                }
 
-            pasar.acquire();
-            esperarAntes.release();
-            listaPasar.remove(hu);
-            listaPasando.add(hu);
-            sleep(1000);
-            listaPasando.remove(hu);
-            pasar.release();
+                pasar.acquire();
+                esperarAntes.release();
+                listaPasar.remove(hu);
+                listaPasando.add(hu);
+                sleep(1000);
+                listaPasando.remove(hu);
+                pasar.release();
+            } finally {
+                candado.unlock();
+            }
             zonaRiesgo.entrarHumano(hu);
-            sleep((long) (Math.random()*3000+5000));
+            sleep((long) (Math.random() * 3000 + 2000));
+
         } catch (InterruptedException | BrokenBarrierException e) {
-            System.out.println(hu.getIdHumano()+" se murioooo");
+            System.out.println(hu.getIdHumanoStr() + " ha muerto y ahora es un zombie.");
+
         }
     }
 
-    public void venirDelExterior(Humano hu){
+    public void venirDelExterior(Humano hu) {
         try {
-            zonaRiesgo.salirHumano(hu);
-            System.out.println("Vuelve el humano" + hu.getIdHumanoStr());
-            listaRegresar.add(hu);
-            pasar.acquire();
-            listaRegresar.remove(hu);
-            sleep(1000);
-            pasar.release();
-            candado.lock();
-            condicion.signal();
-            candado.unlock();
+            if (hu.isMuerto()) {
+                return;
+            } else {
+                zonaRiesgo.salirHumano(hu);
+                if (hu.getMarcado()) {
+                    System.out.println("Vuelve el humano " + hu.getIdHumanoStr() + " marcado");
+                    hu.setComida(false);
+                } else {
+                    System.out.println("Vuelve el humano " + hu.getIdHumanoStr());
+                    hu.setComida(true);
+                }
+                listaRegresar.add(hu);
+                pasar.acquire();
+                listaRegresar.remove(hu);
+                sleep(1000);
+                pasar.release();
+                candado.lock();
+                try {
+                    condicion.signal();
+                } finally {
+                    candado.unlock();
+                }
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 }

@@ -19,38 +19,45 @@ public class Main {
             arrayTunel[i] = new Tunel(arrayZonaRiesgo[i]);
         }
 
-        ZonaDescanso zonaDescanso = new ZonaDescanso(arrayTunel);
+        ZonaComun zonaComun = new ZonaComun(arrayTunel);
+        ZonaDescanso zonaDescanso = new ZonaDescanso();
 
         //creacion zombie
         idZombie[0] = "Z";
-        for (int i = 1; i<=4; i++){
-            idZombie[i]="0";
+        for (int i = 1; i <= 4; i++) {
+            idZombie[i] = "0";
         }
         new Zombie(idZombie, 0, arrayZonaRiesgo).start();
-        
+
         //Creacción de los humanos
-        idHumanos[0] = "H";
+        int contadorHumano = 1; // 🔥 Empezamos en 1
+
         for (int t = 0; t < 10; t++) {
-            idHumanos[1] = Integer.toString(t);
             for (int k = 0; k < 10; k++) {
-                idHumanos[2] = Integer.toString(k);
                 for (int i = 0; i < 10; i++) {
-                    idHumanos[3] = Integer.toString(i);
                     for (int j = 0; j < 10; j++) {
-                        idHumanos[4] = Integer.toString(j);
-                        System.out.println(arrayZonaRiesgo[3].getListaHumanos().toString());
-                        System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]);
-                        new Humano(idHumanos, comedor, arrayTunel, zonaDescanso).start();
+
+                        String num = String.format("%04d", contadorHumano); // 🔥 Formatear número a 4 cifras
+                        idHumanos[0] = "H";
+                        idHumanos[1] = String.valueOf(num.charAt(0));
+                        idHumanos[2] = String.valueOf(num.charAt(1));
+                        idHumanos[3] = String.valueOf(num.charAt(2));
+                        idHumanos[4] = String.valueOf(num.charAt(3));
+                        
+                        System.out.println(idHumanos[0]+idHumanos[1]+idHumanos[2]+idHumanos[3]+idHumanos[4]);
+                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso).start();
+                        contadorHumano++;
+
                         try {
                             sleep(500 + (int) (1500 * Math.random()));
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                        } catch (InterruptedException ie) {
+                            System.out.println("Error creando humano");
                         }
+
                     }
                 }
             }
         }
-        
-        
+
     }
 }
