@@ -53,7 +53,6 @@ public class Main {
                         } catch (InterruptedException ie) {
                             System.out.println("Error creando humano");
                         }
-
                     }
                 }
             }

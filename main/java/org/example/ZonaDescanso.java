@@ -1,12 +1,12 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.Thread.sleep;
 
 public class ZonaDescanso {
-    private ArrayList<Humano> listaDescansando = new ArrayList<>();
-   
+    private LinkedBlockingQueue<Humano> listaDescansando = new LinkedBlockingQueue<>();
     public ZonaDescanso(){
     
     }

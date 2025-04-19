@@ -1,31 +1,35 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ZonaRiesgo {
 
-    private ArrayList listaHumanos = new ArrayList<Humano>();
-    private ArrayList listaZombies = new ArrayList<Zombie>();
+    private LinkedBlockingQueue<Zombie> listaZombies = new LinkedBlockingQueue<>();
+    private ArrayList<Humano> listaHumanos = new ArrayList<>();
 
     public ZonaRiesgo(){
 
     }
 
-    public ArrayList getListaHumanos() {
+    public List<Humano> getListaHumanos() {
         return listaHumanos;
     }
 
-    public ArrayList getListaZombies() {
+    public LinkedBlockingQueue<Zombie> getListaZombies() {
         return listaZombies;
     }
 
-    public void entrarHumano(Humano hu){
+    public synchronized void entrarHumano(Humano hu){
+        notifyAll();
         listaHumanos.add(hu);
     }
 
     public void salirHumano(Humano hu){
         listaHumanos.remove(hu);
-        hu.setComida(true);
     }
 
     public void entrarZombie(Zombie zo){
@@ -36,4 +40,15 @@ public class ZonaRiesgo {
         listaZombies.remove(zo);
     }
 
+    public synchronized Humano devolverHumanoAleatorio(ZonaRiesgo zonaActual) {
+        if (zonaActual.getListaHumanos().isEmpty()){
+            return null;
+        }else{
+            int numHumanos = zonaActual.getListaHumanos().size();
+            int rand2 = (int) (numHumanos * Math.random());
+            Humano huAtacado = (Humano) zonaActual.getListaHumanos().get(rand2);
+            zonaActual.getListaHumanos().remove(huAtacado);
+            return huAtacado;
+        }
+    }
 }

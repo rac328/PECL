@@ -2,10 +2,11 @@ package org.example;
 
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ZonaComun {
     private Tunel[] arrayTunel;
-    private ArrayList listaHumanos = new ArrayList<Humano>();
+    private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
 
     public ZonaComun(Tunel[] at){
         arrayTunel = at;
@@ -14,7 +15,7 @@ public class ZonaComun {
 
     public void entrarZonaComun(Humano hu){
         listaHumanos.add(hu);
-        Logger.escribir("Humano "+hu.getIdHumanoStr()+" ha entrado a la zona común.");
+        Logger.escribir("Humano "+hu.getIdHumanoStr()+" ha entrado a la Zona Común.");
     }
 
     public void prepararse(Humano hu){
@@ -27,11 +28,13 @@ public class ZonaComun {
     }
 
     public void vidaFueraRefugio(Humano hu){
-        int eleccion = (int) (Math.random()*3);
-        Logger.escribir("Humano "+hu.getIdHumanoStr()+" ha decidido salir por el tunel "+eleccion);
+        hu.setMarcado(false);
+        int eleccion = (int) (Math.random()*4);
+        System.out.println("La elección del tunel"+ eleccion);
+        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
         listaHumanos.remove(hu);
         arrayTunel[eleccion].irExterior(hu);
-        if (!hu.getVuelveMarcado()&&!hu.isInterrupted()){
+        if (!hu.isMuerto()){
             arrayTunel[eleccion].venirDelExterior(hu);
         }
 

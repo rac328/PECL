@@ -13,7 +13,7 @@ import java.util.concurrent.Semaphore;
 
 /**
  *
- * @author Alex
+ * @author Alex y Raul
  */
 public class Logger {
     private static final String FICHERO = "apocalipsis.txt"; //static = que la variable pertenece a la clase y no al objeto, unica y compartida entre todos los que usen la clase
@@ -32,7 +32,6 @@ public class Logger {
                 System.out.println("Error escribiendo en el log.");
             }
         }catch(InterruptedException ie){
-            Thread.currentThread().interrupt();
             System.out.println("Interrumpido mientras escribia en el log.");
         }finally{
             sem.release();

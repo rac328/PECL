@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.concurrent.Semaphore;
+
 public class Zombie extends Thread {
 
     private int contadorMuertes;
@@ -26,10 +28,10 @@ public class Zombie extends Thread {
                 int rand1 = (int) (4 * Math.random());
                 ZonaRiesgo zonaActual = arrayZonaRiesgo[rand1];
                 zonaActual.entrarZombie(this);
-                if (!zonaActual.getListaHumanos().isEmpty()) {
-                    int numHumanos = zonaActual.getListaHumanos().size();
-                    int rand2 = (int) (numHumanos * Math.random());
-                    Humano huAtacado = (Humano) zonaActual.getListaHumanos().get(rand2);
+                Humano huAtacado = zonaActual.devolverHumanoAleatorio(zonaActual);
+                if(!(huAtacado == null)){
+                    huAtacado.setEsperandoAtaque(true);
+                    huAtacado.interrupt();
                     atacar(huAtacado, zonaActual);
                 }
                 sleep(2000 + (int) (1000 * Math.random()));
@@ -42,40 +44,32 @@ public class Zombie extends Thread {
 
     public void atacar(Humano hu, ZonaRiesgo zonaActual) {
         try {
+            sleep(500 + (int) (1000 * Math.random()));
             int prob = (int) (3 * Math.random());
             if (prob == 0) {
                 String[] idH = hu.getIdHumano();
                 matarHumano(hu, zonaActual);
                 String[] idZ = new String[]{"Z", idH[1], idH[2], idH[3], idH[4]};
-                
+
                 new Zombie(idZ, 0, arrayZonaRiesgo).start();
                 contadorMuertes++;
-            } else {
+            }
+            else {
                 Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
                 hu.setMarcado(true);
-                hu.setVuelveMarcado(true);
-                hu.setComida(false);
-                zonaActual.salirHumano(hu);
-                for (int i = 0; i < hu.getArrayTunel().length; i++) {
-                    Tunel t = hu.getArrayTunel()[i];
-                    if (t != null) {
-                        t.venirDelExterior(hu);
-                        break;
-                    }
-                }
-
+                //El zombie realiza un await en la cyclic barrier para que el humano y el zombie sigan con la ejecución
+                hu.Defensa();
+                //El humano ya no está esperando para el ataque, lo marcamos a false
+                hu.setEsperandoAtaque(false);
             }
-            sleep(500 + (int) (1000 * Math.random()));
         } catch (InterruptedException ie) {
             System.out.println("Error");
         }
     }
 
     public void matarHumano(Humano hu, ZonaRiesgo zonaActual) {
-        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie()+ " y ahora tambien es un zombie.");
-        zonaActual.salirHumano(hu);
+        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie() + " y ahora tambien es un zombie.");
         hu.morir();
-        hu.interrupt();
     }
 
 }

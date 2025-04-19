@@ -18,18 +18,14 @@ public class Comedor {
     }
 
     public void depositarComida(Humano hu) {
-        if (!hu.isMuerto()) {
-            if (hu.llevaComida()) {
-                
+            if (!hu.getMarcado() && !hu.isMuerto()) {
                 comidaDisponible.incrementAndGet();
                 comidaDisponible.incrementAndGet();
                 Logger.escribir("El humano "+hu.getIdHumanoStr()+" ha traido 2 piezas de comida. Comida restante: "+comidaDisponible.toString());
-                hu.setComida(false);
                 comidaEsperar.lock();
-                noComida.signal();
+                noComida.signalAll();
                 comidaEsperar.unlock();
-            }
-        }else{return;}
+        }
     }
     
 
