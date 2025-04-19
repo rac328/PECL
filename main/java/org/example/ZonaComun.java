@@ -14,10 +14,12 @@ public class ZonaComun {
 
     public void entrarZonaComun(Humano hu){
         listaHumanos.add(hu);
+        Logger.escribir("Humano "+hu.getIdHumanoStr()+" ha entrado a la zona común.");
     }
 
-    public void prepararse(){
+    public void prepararse(Humano hu){
         try {
+            Logger.escribir("Humano "+hu.getIdHumanoStr()+" se esta preparando.");
             sleep((long) (Math.random()*1000+1000));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -25,7 +27,8 @@ public class ZonaComun {
     }
 
     public void vidaFueraRefugio(Humano hu){
-        int eleccion = (int) (Math.random()*0+3);
+        int eleccion = (int) (Math.random()*3);
+        Logger.escribir("Humano "+hu.getIdHumanoStr()+" ha decidido salir por el tunel "+eleccion);
         listaHumanos.remove(hu);
         arrayTunel[eleccion].irExterior(hu);
         if (!hu.getVuelveMarcado()&&!hu.isInterrupted()){

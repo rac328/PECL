@@ -16,12 +16,12 @@ public class ZonaDescanso {
             try{
             synchronized(this){
                 listaDescansando.add(hu);
-                System.out.println("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
+                Logger.escribir("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
             }
             sleep(2000+(int)(2000*Math.random()));
             synchronized(this){
                 listaDescansando.remove(hu);
-                System.out.println("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
+                Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
             }
         }catch(InterruptedException ie){
             System.out.println("Error descansar al volver humano " + hu.getIdHumanoStr());
@@ -35,13 +35,13 @@ public class ZonaDescanso {
         try{
             synchronized(this){
                 listaDescansando.add(hu);
-                System.out.println("Humano marcado " + hu.getIdHumanoStr() + " está descansando para curarse.");
+                Logger.escribir("Humano marcado " + hu.getIdHumanoStr() + " está descansando tras ser atacado para curarse.");
                 hu.setMarcado(false);
             }
             sleep(3000+(int)(2000*Math.random()));
             synchronized(this){
                 listaDescansando.remove(hu);
-                System.out.println("Humano " + hu.getIdHumanoStr() + " se ha curado y ya no esta marcado.");
+                Logger.escribir("Humano " + hu.getIdHumanoStr() + " se ha curado y ya no esta marcado.");
             }
         }catch(InterruptedException ie){
             System.out.println("Error descansar humano marcado " + hu.getIdHumanoStr());

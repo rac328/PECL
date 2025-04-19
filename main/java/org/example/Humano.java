@@ -83,7 +83,7 @@ public class Humano extends Thread {
             try {
                 if (!this.isInterrupted()) {
                     zonaComun.entrarZonaComun(this);
-                    zonaComun.prepararse();
+                    zonaComun.prepararse(this);
                     zonaComun.vidaFueraRefugio(this);
                     sleep(1);
                     comedor.depositarComida(this);

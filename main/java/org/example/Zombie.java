@@ -51,7 +51,7 @@ public class Zombie extends Thread {
                 new Zombie(idZ, 0, arrayZonaRiesgo).start();
                 contadorMuertes++;
             } else {
-                System.out.println("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
+                Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
                 hu.setMarcado(true);
                 hu.setVuelveMarcado(true);
                 hu.setComida(false);
@@ -72,7 +72,7 @@ public class Zombie extends Thread {
     }
 
     public void matarHumano(Humano hu, ZonaRiesgo zonaActual) {
-        System.out.println("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie());
+        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie()+ " y ahora tambien es un zombie.");
         zonaActual.salirHumano(hu);
         hu.morir();
         hu.interrupt();

@@ -20,9 +20,10 @@ public class Comedor {
     public void depositarComida(Humano hu) {
         if (!hu.isMuerto()) {
             if (hu.llevaComida()) {
+                
                 comidaDisponible.incrementAndGet();
                 comidaDisponible.incrementAndGet();
-                System.out.println("Comida RESTANTE: " + comidaDisponible.toString());
+                Logger.escribir("El humano "+hu.getIdHumanoStr()+" ha traido 2 piezas de comida. Comida restante: "+comidaDisponible.toString());
                 hu.setComida(false);
                 comidaEsperar.lock();
                 noComida.signal();
@@ -38,15 +39,15 @@ public class Comedor {
                 comer.acquire();
                 comidaEsperar.lock();
                 while (comidaDisponible.get() == 0) {
+                    Logger.escribir("El humano "+hu.getIdHumanoStr()+" esta esperando para comer pero no hay comida.");
                     noComida.await();
                 }
                 comidaDisponible.decrementAndGet();
+                Logger.escribir("El humano "+hu.getIdHumanoStr()+" ha comido. Comida restante: "+comidaDisponible.toString());
                 comidaEsperar.unlock();
-                sleep((long) (Math.random() * 3000 + 5000));
-                System.out.println("Alguien ha comido. Comida RESTANTE: " + comidaDisponible.toString());
                 comer.release();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                return; //ha muerto
             }
         } else {
             return;

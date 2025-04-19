@@ -16,7 +16,7 @@ public class Main {
 
         Tunel[] arrayTunel = new Tunel[4];
         for (int i = 0; i < 4; i++) {
-            arrayTunel[i] = new Tunel(arrayZonaRiesgo[i]);
+            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i]);
         }
 
         ZonaComun zonaComun = new ZonaComun(arrayTunel);
