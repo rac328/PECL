@@ -28,7 +28,6 @@ public class ZonaComun {
     }
 
     public void vidaFueraRefugio(Humano hu){
-        hu.setMarcado(false);
         int eleccion = (int) (Math.random()*4);
         System.out.println("La elección del tunel"+ eleccion);
         Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
