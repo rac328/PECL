@@ -1,5 +1,6 @@
-package org.example;
+package mainAnterior;
 
+import org.example.*;
 import static java.lang.Thread.sleep;
 
 public class Main {
@@ -20,7 +21,7 @@ public class Main {
         }
 
         ZonaComun zonaComun = new ZonaComun(arrayTunel);
-        ZonaDescanso zonaDescanso = new ZonaDescanso();
+        ZonaDescanso zonaDescanso = new ZonaDescanso(new Ventana());
 
         //creacion zombie
         idZombie[0] = "Z";
@@ -29,15 +30,15 @@ public class Main {
         }
         new Zombie(idZombie, 0, arrayZonaRiesgo).start();
 
-        //Creacción de los humanos
-        int contadorHumano = 1; // 🔥 Empezamos en 1
+        //creacion humanos
+        int contadorHumano = 1;
 
         for (int t = 0; t < 10; t++) {
             for (int k = 0; k < 10; k++) {
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
 
-                        String num = String.format("%04d", contadorHumano); // 🔥 Formatear número a 4 cifras
+                        String num = String.format("%04d", contadorHumano); 
                         idHumanos[0] = "H";
                         idHumanos[1] = String.valueOf(num.charAt(0));
                         idHumanos[2] = String.valueOf(num.charAt(1));
