@@ -25,10 +25,8 @@ public class Ventana extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public Ventana() {
-        setVisible(true);
         initComponents();
         iniciarSimulacion();
-        setVisible(true);
     }
 
 
@@ -57,9 +55,9 @@ public class Ventana extends javax.swing.JFrame {
         int contadorHumano = 1;
 
         for (int t = 0; t < 10; t++) {
-            for (int k = 0; k < 10; k++) {
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
+            //for (int k = 0; k < 10; k++) {
+                //for (int i = 0; i < 10; i++) {
+                    //for (int j = 0; j < 10; j++) {
 
                         String num = String.format("%04d", contadorHumano);
                         idHumanos[0] = "H";
@@ -78,9 +76,9 @@ public class Ventana extends javax.swing.JFrame {
                             System.out.println("Error creando humano");
                         }
                     }
-                }
-            }
-        }
+                //}
+            //}
+        //}
     }
 
     public void actualizarHumanosDescansando() {
@@ -229,7 +227,9 @@ public class Ventana extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Ventana().setVisible(true);
+                
             }
+            
         });
 
     }
