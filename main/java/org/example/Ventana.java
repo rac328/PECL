@@ -5,6 +5,8 @@
 package org.example;
 
 import static java.lang.Thread.sleep;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.*;
 
 /**
@@ -17,22 +19,23 @@ public class Ventana extends javax.swing.JFrame {
     private ZonaComun zonaComun;
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Comedor comedor = new Comedor();
+    private Comedor comedor = new Comedor(this);
     String[] idHumanos = new String[5];
     String[] idZombie = new String[5];
+     private ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor para manejar hilos
 
     /**
      * Creates new form NewJFrame
      */
     public Ventana() {
+        setTitle("Apocalipsis Zombi");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
-        iniciarSimulacion();
+        crearSimulacionSegundoPlano();
     }
 
 
     private void iniciarSimulacion() {
-        setTitle("Apocalipsis Zombi");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         for (int i = 0; i < 4; i++) {
             arrayZonaRiesgo[i] = new ZonaRiesgo();
@@ -42,7 +45,7 @@ public class Ventana extends javax.swing.JFrame {
             arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i]);
         }
 
-        zonaComun = new ZonaComun(arrayTunel);
+        zonaComun = new ZonaComun(arrayTunel, this);
         zonaDescanso = new ZonaDescanso(this);
         //creacion zombie
         idZombie[0] = "Z";
@@ -55,9 +58,9 @@ public class Ventana extends javax.swing.JFrame {
         int contadorHumano = 1;
 
         for (int t = 0; t < 10; t++) {
-            //for (int k = 0; k < 10; k++) {
-                //for (int i = 0; i < 10; i++) {
-                    //for (int j = 0; j < 10; j++) {
+            for (int k = 0; k < 10; k++) {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
 
                         String num = String.format("%04d", contadorHumano);
                         idHumanos[0] = "H";
@@ -76,10 +79,20 @@ public class Ventana extends javax.swing.JFrame {
                             System.out.println("Error creando humano");
                         }
                     }
-                //}
-            //}
-        //}
+                }
+            }
+        }
     }
+    private void crearSimulacionSegundoPlano() {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                // Llamar a la creación de zombies y humanos en segundo plano
+                iniciarSimulacion();
+            }
+        });
+    }
+
 
     public void actualizarHumanosDescansando() {
 
@@ -88,6 +101,28 @@ public class Ventana extends javax.swing.JFrame {
             jTextAreaHumanosDescanso.append(", "+hu.getIdHumanoStr());
         }
         jTextAreaHumanosDescanso.setCaretPosition(jTextAreaHumanosDescanso.getDocument().getLength());
+    }
+    
+    public void actualizarHumanosComedor() {
+
+        jTextAreaHumanosComedor.setText("");  // Limpiar el JTextArea
+        for (Humano hu : comedor.getListaHumanosComedor()) {
+            jTextAreaHumanosComedor.append(" "+hu.getIdHumanoStr());
+        }
+        jTextAreaHumanosComedor.setCaretPosition(jTextAreaHumanosComedor.getDocument().getLength());
+    }
+    
+    public void actualizarComida(){
+        jTextFieldNumComida.setText(comedor.getComida().toString());
+    }
+    
+    public void actualizarHumanosZonaComun() {
+
+        jTextAreaHumanosZonaComun.setText("");  // Limpiar el JTextArea
+        for (Humano hu : zonaComun.getListaHumanosZonaComun()) {
+            jTextAreaHumanosZonaComun.append(" "+hu.getIdHumanoStr());
+        }
+        jTextAreaHumanosZonaComun.setCaretPosition(jTextAreaHumanosZonaComun.getDocument().getLength());
     }
 
     /**
@@ -105,19 +140,32 @@ public class Ventana extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaHumanosDescanso = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaHumanosComedor = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldNumComida = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextAreaHumanosZonaComun = new javax.swing.JTextArea();
         jPanelTuneles = new javax.swing.JPanel();
         jPaneZonaRiesgo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridLayout());
 
+        jPanelRefugio.setBackground(new java.awt.Color(153, 255, 255));
         jPanelRefugio.setPreferredSize(new java.awt.Dimension(200, 400));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("REFUGIO");
 
+        jPanelDescanso.setBackground(new java.awt.Color(102, 102, 102));
+
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Descansando");
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jTextAreaHumanosDescanso.setColumns(20);
@@ -132,7 +180,7 @@ public class Ventana extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelDescansoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelDescansoLayout.setVerticalGroup(
@@ -144,14 +192,101 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setForeground(new java.awt.Color(153, 255, 255));
+
+        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Comedor");
+
+        jTextAreaHumanosComedor.setColumns(20);
+        jTextAreaHumanosComedor.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaHumanosComedor);
+
+        jLabel4.setText("Comida");
+
+        jTextFieldNumComida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNumComidaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextFieldNumComida, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 1, Short.MAX_VALUE)))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNumComida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Zona común");
+
+        jTextAreaHumanosZonaComun.setColumns(20);
+        jTextAreaHumanosZonaComun.setRows(5);
+        jScrollPane3.setViewportView(jTextAreaHumanosZonaComun);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanelRefugioLayout = new javax.swing.GroupLayout(jPanelRefugio);
         jPanelRefugio.setLayout(jPanelRefugioLayout);
         jPanelRefugioLayout.setHorizontalGroup(
             jPanelRefugioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRefugioLayout.createSequentialGroup()
+            .addGroup(jPanelRefugioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelDescanso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelRefugioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelDescanso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelRefugioLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelRefugioLayout.setVerticalGroup(
@@ -161,7 +296,11 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanelDescanso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelRefugio);
@@ -172,7 +311,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanelTuneles.setLayout(jPanelTunelesLayout);
         jPanelTunelesLayout.setHorizontalGroup(
             jPanelTunelesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 206, Short.MAX_VALUE)
+            .addGap(0, 223, Short.MAX_VALUE)
         );
         jPanelTunelesLayout.setVerticalGroup(
             jPanelTunelesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +324,7 @@ public class Ventana extends javax.swing.JFrame {
         jPaneZonaRiesgo.setLayout(jPaneZonaRiesgoLayout);
         jPaneZonaRiesgoLayout.setHorizontalGroup(
             jPaneZonaRiesgoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 206, Short.MAX_VALUE)
+            .addGap(0, 223, Short.MAX_VALUE)
         );
         jPaneZonaRiesgoLayout.setVerticalGroup(
             jPaneZonaRiesgoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,6 +335,10 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextFieldNumComidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumComidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNumComidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,12 +380,22 @@ public class Ventana extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPaneZonaRiesgo;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelDescanso;
     private javax.swing.JPanel jPanelRefugio;
     private javax.swing.JPanel jPanelTuneles;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextAreaHumanosComedor;
     private javax.swing.JTextArea jTextAreaHumanosDescanso;
+    private javax.swing.JTextArea jTextAreaHumanosZonaComun;
+    private javax.swing.JTextField jTextFieldNumComida;
     // End of variables declaration//GEN-END:variables
 
 }
