@@ -11,7 +11,7 @@ import javax.swing.*;
 
 /**
  *
- * @author Alex
+ * @author Alex y Raul
  */
 public class Ventana extends javax.swing.JFrame {
 
@@ -19,7 +19,7 @@ public class Ventana extends javax.swing.JFrame {
     private ZonaComun zonaComun;
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Comedor comedor = new Comedor(this);
+    private Comedor comedor = new Comedor();
     String[] idHumanos = new String[5];
     String[] idZombie = new String[5];
      private ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor para manejar hilos
@@ -45,8 +45,8 @@ public class Ventana extends javax.swing.JFrame {
             arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i]);
         }
 
-        zonaComun = new ZonaComun(arrayTunel, this);
-        zonaDescanso = new ZonaDescanso(this);
+        zonaComun = new ZonaComun(arrayTunel);
+        zonaDescanso = new ZonaDescanso();
         //creacion zombie
         idZombie[0] = "Z";
         for (int i = 1; i <= 4; i++) {

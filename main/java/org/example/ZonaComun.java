@@ -11,18 +11,14 @@ public class ZonaComun {
     private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
     private Ventana ventana;
 
-    public ZonaComun(Tunel[] at, Ventana vent) {
+    public ZonaComun(Tunel[] at) {
         arrayTunel = at;
-        ventana = vent;
+
     }
 
     public void entrarZonaComun(Humano hu) {
         listaHumanos.add(hu);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ventana.actualizarHumanosZonaComun();
-            }
-        });
+
         Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la Zona Común.");
     }
 
@@ -40,11 +36,7 @@ public class ZonaComun {
         System.out.println("La elección del tunel" + eleccion);
         Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
         listaHumanos.remove(hu);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ventana.actualizarHumanosZonaComun();
-            }
-        });
+
         arrayTunel[eleccion].irExterior(hu);
         if (!hu.isMuerto()) {
             arrayTunel[eleccion].venirDelExterior(hu);

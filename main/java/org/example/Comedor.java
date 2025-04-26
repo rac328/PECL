@@ -18,35 +18,23 @@ public class Comedor {
     private Ventana ventana;
     private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
 
-    public Comedor(Ventana vent) {
-        ventana = vent;
+    public Comedor() {
+
     }
     
 
     public void depositarComida(Humano hu) {
             if (!hu.getMarcado() && !hu.isMuerto()) {
                 listaComedor.add(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarHumanosComedor();
-                    }
-                });
+
                 comidaDisponible.addAndGet(2);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarComida();
-                    }
-                }); 
+
                 Logger.escribir("El humano "+hu.getIdHumanoStr()+" ha traido 2 piezas de comida. Comida restante: "+comidaDisponible.toString());
                 comidaEsperar.lock();
                 noComida.signalAll();
                 comidaEsperar.unlock();
                 listaComedor.remove(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarHumanosComedor();
-                    }
-                });
+
         }
     }
     
@@ -57,32 +45,20 @@ public class Comedor {
                 comer.acquire();
                 comidaEsperar.lock();
                 listaComedor.add(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarHumanosComedor();
-                    }
-                });
+
                 while (comidaDisponible.get() == 0) {
                     Logger.escribir("El humano "+hu.getIdHumanoStr()+" esta esperando para comer pero no hay comida.");
                     noComida.await();
                 }
                 comidaDisponible.decrementAndGet();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarComida();
-                    }
-                });
+
                 comidaEsperar.unlock();
                 comer.release();
                 Logger.escribir("El humano "+hu.getIdHumanoStr()+" esta comiendo. Comida restante: "+comidaDisponible.toString());
                 sleep(3000+(int)(2000*Math.random()));
                 Logger.escribir("El humano "+hu.getIdHumanoStr()+" ha terminado de comer.");
                 listaComedor.remove(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarHumanosComedor();
-                    }
-                });
+
             } catch (InterruptedException e) {
                 return; //ha muerto
             }
