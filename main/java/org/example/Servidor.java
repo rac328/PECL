@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -8,30 +9,66 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Servidor {
 
-        public static void main(String[] args) {
-            ServerSocket servidor;
-            Socket conexion;
-            int num=0;
-            boolean seguir = true;
-            Arranque arranqueServidor = new Arranque();
+    private boolean seguir = true;
+    private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
+    private ServerSocket servidor;
+    Arranque arranque = new Arranque();
 
-            arranqueServidor.crearSimulacionSegundoPlano();
-
-            try {
-                System.out.println("Servidor Arrancado....");
-                arranqueServidor.pausarEjecucion();
-                servidor = new ServerSocket(5002); //Creamos un ServerSocket en el Puerto 5000
-                conexion = servidor.accept(); //Esperamos una conexión
-                ObjectOutputStream oos = new ObjectOutputStream(conexion.getOutputStream());
-                while (seguir) {
-                    LinkedBlockingQueue<Humano> listaComedor = arranqueServidor.getComedor().getListaHumanosComedor();
-                    System.out.println(listaComedor.toString());
-                    oos.writeObject(listaComedor);
-                    oos.flush();
-                    oos.reset();
-                }
-                conexion.close();
-            } catch (IOException e) {
+    public void iniciarServ() {
+        try {
+            servidor = new ServerSocket(5002);
+            System.out.println("Servidor Arrancando....");
+            arranque.crearSimulacionSegundoPlano();
+            while (true) {
+                Socket cliente = servidor.accept();
+                new Thread(() -> conexionCliente(cliente)).start();
             }
+        } catch (IOException e) {
+            System.out.println("Error al iniciar server");
         }
     }
+
+    public void conexionCliente(Socket cli) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(cli.getOutputStream());
+            DataInputStream dis = new DataInputStream(cli.getInputStream());
+            while (true) {
+
+                synchronized (this) {
+                    while (!seguir) {
+                        wait();
+                    }
+                }
+                LinkedBlockingQueue<Humano> listaComedor = arranque.getComedor().getListaHumanosComedor();
+                oos.writeObject(listaComedor);
+                oos.flush();
+                oos.reset();
+
+                if (dis.available() > 0) {
+                    String msg = dis.readUTF();
+                    if (msg.equals("PAUSAR")) {
+                        seguir = false;
+                        arranque.pausarEjecucion();
+                        System.out.println("Servidor pausado");
+                    } else if (msg.equals("REANUDAR")) {
+                        seguir = true;
+                        arranque.reanudarEjecucion();
+                        synchronized (this){
+                            notify();
+                        }
+                        System.out.println("Servidor reanudado");
+                    }
+                }
+
+            }
+
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error en la conexion con el cliente");
+        }
+    }
+
+    public static void main(String[] args) {
+        Servidor servidor = new Servidor();
+        servidor.iniciarServ();
+    }
+}

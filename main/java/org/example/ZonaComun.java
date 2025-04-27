@@ -11,7 +11,7 @@ public class ZonaComun implements Serializable {
 
     private Tunel[] arrayTunel;
     private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
-    private Ventana ventana;
+    //private Ventana ventana;
 
     public ZonaComun(Tunel[] at) {
         arrayTunel = at;

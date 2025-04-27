@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.example;
+package Visuals.ApocalipsisZombi;
 
+import org.example.*;
 import static java.lang.Thread.sleep;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.*;
 
 /**
@@ -15,15 +17,7 @@ import javax.swing.*;
  */
 public class Ventana extends javax.swing.JFrame {
 
-    private ZonaDescanso zonaDescanso;
-    private ZonaComun zonaComun;
-    private Tunel[] arrayTunel = new Tunel[4];
-    private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Comedor comedor = new Comedor();
-    String[] idHumanos = new String[5];
-    String[] idZombie = new String[5];
-     private ExecutorService executor = Executors.newSingleThreadExecutor(); 
-
+    private Cliente cliente;
     /**
      * Creates new form NewJFrame
      */
@@ -31,99 +25,41 @@ public class Ventana extends javax.swing.JFrame {
         setTitle("Apocalipsis Zombi");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
-        crearSimulacionSegundoPlano();
+        cliente = new Cliente(this);
     }
 
 
-    private void iniciarSimulacion() {
 
-        for (int i = 0; i < 4; i++) {
-            arrayZonaRiesgo[i] = new ZonaRiesgo();
-        }
-
-        for (int i = 0; i < 4; i++) {
-            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i]);
-        }
-
-        zonaComun = new ZonaComun(arrayTunel);
-        zonaDescanso = new ZonaDescanso();
-        //creacion zombie
-        idZombie[0] = "Z";
-        for (int i = 1; i <= 4; i++) {
-            idZombie[i] = "0";
-        }
-        new Zombie(idZombie, 0, arrayZonaRiesgo, new Pausa()).start();
-
-        //creacion humanos
-        int contadorHumano = 1;
-
-        for (int t = 0; t < 10; t++) {
-            for (int k = 0; k < 10; k++) {
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
-
-                        String num = String.format("%04d", contadorHumano);
-                        idHumanos[0] = "H";
-                        idHumanos[1] = String.valueOf(num.charAt(0));
-                        idHumanos[2] = String.valueOf(num.charAt(1));
-                        idHumanos[3] = String.valueOf(num.charAt(2));
-                        idHumanos[4] = String.valueOf(num.charAt(3));
-
-                        System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]);
-                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, new Pausa()).start();
-                        contadorHumano++;
-
-                        try {
-                            sleep(500 + (int) (1500 * Math.random()));
-                        } catch (InterruptedException ie) {
-                            System.out.println("Error creando humano");
-                        }
-                    }
-                }
-            }
-        }
-    }
-    private void crearSimulacionSegundoPlano() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                // Llamar a la creación de zombies y humanos en segundo plano
-                iniciarSimulacion();
-            }
-        });
-    }
-
-
-    public void actualizarHumanosDescansando() {
+    /*public void actualizarHumanosDescansando() {
 
         jTextAreaHumanosDescanso.setText("");  // Limpiar el JTextArea
         for (Humano hu : zonaDescanso.getListaHumanosDescansando()) {
             jTextAreaHumanosDescanso.append(", "+hu.getIdHumanoStr());
         }
         jTextAreaHumanosDescanso.setCaretPosition(jTextAreaHumanosDescanso.getDocument().getLength());
-    }
+    }*/
     
-    public void actualizarHumanosComedor() {
+    public void actualizarHumanosComedor(LinkedBlockingQueue<Humano> listaCom) {
 
         jTextAreaHumanosComedor.setText("");  // Limpiar el JTextArea
-        for (Humano hu : comedor.getListaHumanosComedor()) {
-            jTextAreaHumanosComedor.append(" "+hu.getIdHumanoStr());
+        for (Humano hu : listaCom) {
+            jTextAreaHumanosComedor.append(hu.getIdHumanoStr()+" ");
         }
         jTextAreaHumanosComedor.setCaretPosition(jTextAreaHumanosComedor.getDocument().getLength());
     }
     
-    public void actualizarComida(){
+    /*public void actualizarComida(){
         jTextFieldNumComida.setText(comedor.getComida().toString());
-    }
+    }*/
     
-    public void actualizarHumanosZonaComun() {
+    /*public void actualizarHumanosZonaComun() {
 
         jTextAreaHumanosZonaComun.setText("");  // Limpiar el JTextArea
         for (Humano hu : zonaComun.getListaHumanosZonaComun()) {
             jTextAreaHumanosZonaComun.append(" "+hu.getIdHumanoStr());
         }
         jTextAreaHumanosZonaComun.setCaretPosition(jTextAreaHumanosZonaComun.getDocument().getLength());
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -152,9 +88,9 @@ public class Ventana extends javax.swing.JFrame {
         jTextAreaHumanosZonaComun = new javax.swing.JTextArea();
         jPanelTuneles = new javax.swing.JPanel();
         jPaneZonaRiesgo = new javax.swing.JPanel();
+        Pausar = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
 
         jPanelRefugio.setBackground(new java.awt.Color(153, 255, 255));
         jPanelRefugio.setPreferredSize(new java.awt.Dimension(200, 400));
@@ -300,10 +236,8 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
-
-        getContentPane().add(jPanelRefugio);
 
         jPanelTuneles.setPreferredSize(new java.awt.Dimension(200, 400));
 
@@ -311,27 +245,63 @@ public class Ventana extends javax.swing.JFrame {
         jPanelTuneles.setLayout(jPanelTunelesLayout);
         jPanelTunelesLayout.setHorizontalGroup(
             jPanelTunelesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 223, Short.MAX_VALUE)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanelTunelesLayout.setVerticalGroup(
             jPanelTunelesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanelTuneles);
+        jPaneZonaRiesgo.setPreferredSize(new java.awt.Dimension(200, 400));
 
         javax.swing.GroupLayout jPaneZonaRiesgoLayout = new javax.swing.GroupLayout(jPaneZonaRiesgo);
         jPaneZonaRiesgo.setLayout(jPaneZonaRiesgoLayout);
         jPaneZonaRiesgoLayout.setHorizontalGroup(
             jPaneZonaRiesgoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 223, Short.MAX_VALUE)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPaneZonaRiesgoLayout.setVerticalGroup(
             jPaneZonaRiesgoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPaneZonaRiesgo);
+        Pausar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Pausar.setText("PAUSAR");
+        Pausar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PausarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jPanelRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanelTuneles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPaneZonaRiesgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(556, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Pausar)
+                .addGap(498, 498, 498))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPaneZonaRiesgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelTuneles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addComponent(Pausar)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -339,6 +309,17 @@ public class Ventana extends javax.swing.JFrame {
     private void jTextFieldNumComidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumComidaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNumComidaActionPerformed
+
+    private void PausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PausarActionPerformed
+        if (cliente.isPausado()){
+            cliente.reanudarServidor();
+            Pausar.setText("PAUSAR");
+        }else{
+            cliente.pausarServidor();
+            Pausar.setText("REANUDAR");
+        }
+        cliente.cambiarEstadoSeguir();
+    }//GEN-LAST:event_PausarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,6 +359,7 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton Pausar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

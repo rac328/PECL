@@ -82,11 +82,9 @@ public class Arranque {
 
     public void pausarEjecucion(){
         pausa.pararEjecucion();
-        try {
-            sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    }
+    
+    public void reanudarEjecucion(){
         pausa.continuarEjecucion();
     }
 

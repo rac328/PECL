@@ -8,28 +8,87 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import Visuals.ApocalipsisZombi.*;
 
 public class Cliente {
-    public static void main(String args[]) {
-        Socket cliente;
-        DataInputStream entrada;
-        DataOutputStream salida;
-        String mensaje, respuesta;
-        boolean seguir = true;
 
+    private Ventana ventana;
+    private boolean seguir = true;
+
+    public Cliente(Ventana vent) {
+        ventana = vent;
+    }
+
+    public void conectarServ() {
+        Socket cliente;
         try {
-            cliente = new Socket(InetAddress.getLocalHost(), 5002); //Creamos el socket para conectarnos al puerto 5000 del servidor
+            cliente = new Socket(InetAddress.getLocalHost(), 5002); // Conectar al servidor
             ObjectInputStream ois = new ObjectInputStream(cliente.getInputStream());
-            System.out.println(InetAddress.getLocalHost().toString());
-            while (seguir) {
+
+            while (true) {
+                synchronized (this) {
+                    if (!seguir) {
+                        while (!seguir) {
+                        wait();
+                    }
+                    }
+                }
                 LinkedBlockingQueue<Humano> listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                System.out.println(listaComedorRecibida.toString());
+                ventana.actualizarHumanosComedor(listaComedorRecibida);
             }
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            System.out.println("Error");
+        }
+    }
+
+    public boolean isPausado() {
+        return !seguir;
+    }
+
+    public synchronized void cambiarEstadoSeguir() {
+        seguir = !seguir;
+        if (seguir) {
+            notify();
+        }
+    }
+
+    public void pausarServidor() {
+        try {
+            Socket cliente = new Socket(InetAddress.getLocalHost(), 5002); //conectar
+            DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());
+
+            // enviar mensaje al servidor para pausar
+            salida.writeUTF("PAUSAR");
             cliente.close();
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error al pausar el servidor: " + e.getMessage());
         }
+    }
+
+    public void reanudarServidor() {
+        try {
+            Socket cliente = new Socket(InetAddress.getLocalHost(), 5002); //conectar
+            DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());
+
+            // enviar mensaje al servidor para seguir
+            salida.writeUTF("REANUDAR");
+            cliente.close();
+        } catch (IOException e) {
+            System.out.println("Error al reanudar el servidor: " + e.getMessage());
+        }
+    }
+
+    public static void main(String args[]) {
+        //crear ventana
+        Ventana ventana = new Ventana();
+
+        //crear cliente con ventana
+        Cliente cliente = new Cliente(ventana);
+
+        //crear cliente como hilo para no bloquear interfaz
+        new Thread(() -> cliente.conectarServ()).start();
+
+        //mostrar ventana
+        ventana.setVisible(true);
     }
 }

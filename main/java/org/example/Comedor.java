@@ -15,7 +15,7 @@ public class Comedor {
     private Semaphore comer = new Semaphore(1);
     private ReentrantLock comidaEsperar = new ReentrantLock();
     private Condition noComida = comidaEsperar.newCondition();
-    private Ventana ventana;
+    //private Ventana ventana;
     private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
 
     public Comedor() {

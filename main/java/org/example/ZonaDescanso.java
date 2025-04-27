@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 public class ZonaDescanso implements Serializable {
 
     private LinkedBlockingQueue<Humano> listaDescansando = new LinkedBlockingQueue<>();
-    private Ventana ventana;
+//    private Ventana ventana;
 
     public ZonaDescanso() {}
 
