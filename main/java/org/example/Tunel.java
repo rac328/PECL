@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.Thread.sleep;
 
-public class Tunel {
+public class Tunel implements Serializable {
 
     private int id;
     private Semaphore esperarAntes = new Semaphore(3, true);
@@ -30,6 +31,7 @@ public class Tunel {
 
     public void irExterior(Humano hu) {
         try {
+            hu.comprobarPausaHumano();
             esperarAntes.acquire();
             listaPasar.add(hu);
             if (esperar.getNumberWaiting() + 1 == 3) {
@@ -38,18 +40,20 @@ public class Tunel {
             else {
                 Logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando para salir por el tunel "+id+". Humanos esperando: " + (1 + esperar.getNumberWaiting()));
             }
+            hu.comprobarPausaHumano();
             esperar.await();
+            hu.comprobarPausaHumano();
 
             candado.lock();
             try {
                 //Quitar
                // if(id == 2){System.out.println("negro");}
-
+                hu.comprobarPausaHumano();
                 while (!listaRegresar.isEmpty()) {
                     Logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a que entre otro humano al refugio por el tunel "+id);
                     condicion.await();
                 }
-
+                hu.comprobarPausaHumano();
                 pasar.acquire();
                 Logger.escribir("Humano " + hu.getIdHumanoStr() + " está pasando por el tunel "+id);
                 esperarAntes.release();
@@ -59,13 +63,16 @@ public class Tunel {
                 listaPasando.remove(hu);
                 Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de pasar por el tunel "+id);
                 pasar.release();
+                hu.comprobarPausaHumano();
             }
             finally {
                 candado.unlock();
             }
+            hu.comprobarPausaHumano();
             Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la zona de riesgo "+id);
             zonaRiesgo.entrarHumano(hu);
             sleep((long) (Math.random() * 3000 + 2000));
+            hu.comprobarPausaHumano();
 
         }
         catch (InterruptedException | BrokenBarrierException e) {
@@ -79,6 +86,7 @@ public class Tunel {
 
     public void venirDelExterior(Humano hu) {
         try {
+                hu.comprobarPausaHumano();
                 zonaRiesgo.salirHumano(hu);
                 Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado en la zona de riesgo " + id + " y vuelve al refugio");
 
@@ -105,6 +113,7 @@ public class Tunel {
                 finally {
                     candado.unlock();
                 }
+                hu.comprobarPausaHumano();
         } catch (InterruptedException e) {
             System.out.println("muerto");
         }

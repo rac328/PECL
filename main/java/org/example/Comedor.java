@@ -43,16 +43,19 @@ public class Comedor {
         if (!hu.isMuerto()) {
             try {
                 comer.acquire();
-                comidaEsperar.lock();
-                listaComedor.add(hu);
+                try {
+                    comidaEsperar.lock();
+                    listaComedor.add(hu);
 
-                while (comidaDisponible.get() == 0) {
-                    Logger.escribir("El humano "+hu.getIdHumanoStr()+" esta esperando para comer pero no hay comida.");
-                    noComida.await();
+                    while (comidaDisponible.get() == 0) {
+                        Logger.escribir("El humano " + hu.getIdHumanoStr() + " esta esperando para comer pero no hay comida.");
+                        noComida.await();
+                    }
+                    comidaDisponible.decrementAndGet();
                 }
-                comidaDisponible.decrementAndGet();
-
-                comidaEsperar.unlock();
+                finally {
+                    comidaEsperar.unlock();
+                }
                 comer.release();
                 Logger.escribir("El humano "+hu.getIdHumanoStr()+" esta comiendo. Comida restante: "+comidaDisponible.toString());
                 sleep(3000+(int)(2000*Math.random()));

@@ -16,6 +16,7 @@ public class Arranque {
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
     private Comedor comedor = new Comedor();
+    private Pausa pausa = new Pausa();
     private String[] idHumanos = new String[5];
     private String[] idZombie = new String[5];
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -37,7 +38,7 @@ public class Arranque {
         for (int i = 1; i <= 4; i++) {
             idZombie[i] = "0";
         }
-        new Zombie(idZombie, 0, arrayZonaRiesgo).start();
+        new Zombie(idZombie, 0, arrayZonaRiesgo, pausa).start();
 
         //creacion humanos
         int contadorHumano = 1;
@@ -55,7 +56,7 @@ public class Arranque {
                         idHumanos[4] = String.valueOf(num.charAt(3));
 
                         System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]);
-                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso).start();
+                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, pausa).start();
                         contadorHumano++;
 
                         try {
@@ -77,6 +78,16 @@ public class Arranque {
                 iniciarSimulacion();
             }
         });
+    }
+
+    public void pausarEjecucion(){
+        pausa.pararEjecucion();
+        try {
+            sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        pausa.continuarEjecucion();
     }
 
     public ZonaDescanso getZonaDescanso() {

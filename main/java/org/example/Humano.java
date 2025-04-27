@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
@@ -8,24 +9,26 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Humano extends Thread {
+public class Humano extends Thread implements Serializable {
 
     private String[] id = new String[5];
-    private boolean marcado = false;
-    private Comedor comedor;
-    private Tunel[] arrayTunel;
-    private ZonaDescanso zonaDescanso;
-    private ZonaComun zonaComun;
-    private boolean muerto = false;
-    private CyclicBarrier esperarAtaque = new CyclicBarrier(2);
-    private AtomicBoolean esperandoAtaque = new AtomicBoolean(false);
+    private transient boolean marcado = false;
+    private transient Comedor comedor;
+    private transient Tunel[] arrayTunel;
+    private transient ZonaDescanso zonaDescanso;
+    private transient ZonaComun zonaComun;
+    private transient boolean muerto = false;
+    private transient CyclicBarrier esperarAtaque = new CyclicBarrier(2);
+    private transient AtomicBoolean esperandoAtaque = new AtomicBoolean(false);
+    private transient Pausa pausa;
 
-    public Humano(String[] identificador, Comedor come, Tunel[] at, ZonaComun zc, ZonaDescanso zd) {
+    public Humano(String[] identificador, Comedor come, Tunel[] at, ZonaComun zc, ZonaDescanso zd, Pausa pa) {
         id = identificador;
         comedor = come;
         arrayTunel = at;
         zonaComun = zc;
         zonaDescanso = zd;
+        pausa = pa;
     }
 
     public boolean getEsperandoAtaque() {
@@ -79,19 +82,31 @@ public class Humano extends Thread {
             throw new RuntimeException(e);
         }
     }
-    
+
+    public void comprobarPausaHumano(){
+        pausa.comprobarPausa();
+    }
+
     public void run() {
 
         while (!muerto) {
-                    zonaComun.entrarZonaComun(this);
-                    zonaComun.prepararse(this);
-                    zonaComun.vidaFueraRefugio(this);
-                    comedor.depositarComida(this);
-                    zonaDescanso.descansarVuelta(this);
-                    comedor.comer(this);
-                    if (marcado) {
-                        zonaDescanso.descansarMarcado(this);
-                    }
+            pausa.comprobarPausa();
+            zonaComun.entrarZonaComun(this);
+            pausa.comprobarPausa();
+            zonaComun.prepararse(this);
+            pausa.comprobarPausa();
+            zonaComun.vidaFueraRefugio(this);
+            pausa.comprobarPausa();
+            comedor.depositarComida(this);
+            pausa.comprobarPausa();
+            zonaDescanso.descansarVuelta(this);
+            pausa.comprobarPausa();
+            comedor.comer(this);
+            pausa.comprobarPausa();
+            if (marcado) {
+                zonaDescanso.descansarMarcado(this);
+                pausa.comprobarPausa();
+            }
         }
         System.out.println("Terminó el humano" + getIdHumanoStr());
     }

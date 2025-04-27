@@ -52,7 +52,7 @@ public class Ventana extends javax.swing.JFrame {
         for (int i = 1; i <= 4; i++) {
             idZombie[i] = "0";
         }
-        new Zombie(idZombie, 0, arrayZonaRiesgo).start();
+        new Zombie(idZombie, 0, arrayZonaRiesgo, new Pausa()).start();
 
         //creacion humanos
         int contadorHumano = 1;
@@ -70,7 +70,7 @@ public class Ventana extends javax.swing.JFrame {
                         idHumanos[4] = String.valueOf(num.charAt(3));
 
                         System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]);
-                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso).start();
+                        new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, new Pausa()).start();
                         contadorHumano++;
 
                         try {

@@ -1,39 +1,36 @@
 package org.example;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Servidor {
 
         public static void main(String[] args) {
             ServerSocket servidor;
             Socket conexion;
-            DataOutputStream salida;
-            DataInputStream entrada;
-           int num=0;
-
+            int num=0;
+            boolean seguir = true;
             Arranque arranqueServidor = new Arranque();
+
             arranqueServidor.crearSimulacionSegundoPlano();
 
             try {
-                servidor = new ServerSocket(5000); //Creamos un ServerSocket en el Puerto 5000
                 System.out.println("Servidor Arrancado....");
-                while (true) {
-                    conexion = servidor.accept(); //Esperamos una conexión
-                    num++;
-                    entrada = new DataInputStream(conexion.getInputStream()); //Abrimos los canales de E/S
-                    salida = new DataOutputStream(conexion.getOutputStream());
-
-                    String mensaje = entrada.readUTF(); //Leemos el mensaje del cliente
-
-                    salida.writeUTF("Buenos días " + mensaje); //Le respondemos
-                    entrada.close(); //Cerramos los flujos de entrada y salida
-                    salida.close();
-                    conexion.close(); //Y cerramos la conexión
+                arranqueServidor.pausarEjecucion();
+                servidor = new ServerSocket(5002); //Creamos un ServerSocket en el Puerto 5000
+                conexion = servidor.accept(); //Esperamos una conexión
+                ObjectOutputStream oos = new ObjectOutputStream(conexion.getOutputStream());
+                while (seguir) {
+                    LinkedBlockingQueue<Humano> listaComedor = arranqueServidor.getComedor().getListaHumanosComedor();
+                    System.out.println(listaComedor.toString());
+                    oos.writeObject(listaComedor);
+                    oos.flush();
+                    oos.reset();
                 }
+                conexion.close();
             } catch (IOException e) {
             }
         }

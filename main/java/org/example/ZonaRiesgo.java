@@ -1,12 +1,13 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ZonaRiesgo {
+public class ZonaRiesgo implements Serializable {
 
     private LinkedBlockingQueue<Zombie> listaZombies = new LinkedBlockingQueue<>();
     private ArrayList<Humano> listaHumanos = new ArrayList<>();

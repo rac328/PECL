@@ -1,12 +1,13 @@
 package org.example;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static java.lang.Thread.sleep;
 import javax.swing.SwingUtilities;
 
-public class ZonaDescanso {
+public class ZonaDescanso implements Serializable {
 
     private LinkedBlockingQueue<Humano> listaDescansando = new LinkedBlockingQueue<>();
     private Ventana ventana;
