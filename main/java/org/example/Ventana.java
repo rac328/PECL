@@ -22,7 +22,7 @@ public class Ventana extends javax.swing.JFrame {
     private Comedor comedor = new Comedor();
     String[] idHumanos = new String[5];
     String[] idZombie = new String[5];
-     private ExecutorService executor = Executors.newSingleThreadExecutor(); // Executor para manejar hilos
+     private ExecutorService executor = Executors.newSingleThreadExecutor(); 
 
     /**
      * Creates new form NewJFrame
