@@ -45,7 +45,7 @@ public class Humano extends Thread implements Serializable {
 
     public String getIdHumanoStr() {
         String str = "";
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             str += id[i];
         }
         return str;

@@ -6,7 +6,7 @@ import java.util.concurrent.Semaphore;
 public class Zombie extends Thread implements Serializable {
 
     private int contadorMuertes;
-    private String[] id = new String[5];
+    private String[] id = new String[6];
     private ZonaRiesgo[] arrayZonaRiesgo;
     private transient Pausa pausa;
 
@@ -19,7 +19,7 @@ public class Zombie extends Thread implements Serializable {
 
     public String getIdZombie() {
         String str = "";
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             str += id[i];
         }
         return str;
@@ -66,7 +66,7 @@ public class Zombie extends Thread implements Serializable {
                 pausa.comprobarPausa();
                 matarHumano(hu, zonaActual);
                 pausa.comprobarPausa();
-                String[] idZ = new String[]{"Z", idH[1], idH[2], idH[3], idH[4]};
+                String[] idZ = new String[]{"Z", idH[1], idH[2], idH[3], idH[4], idH[5]};
 
                 new Zombie(idZ, 0, arrayZonaRiesgo, pausa).start();
                 pausa.comprobarPausa();

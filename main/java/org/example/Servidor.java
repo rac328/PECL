@@ -6,23 +6,32 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
+import Visuals.ApocalipsisZombi.*;
 
 public class Servidor {
 
     private boolean seguir = true;
     private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
     private ServerSocket servidor;
-    Arranque arranque = new Arranque();
+    private Arranque arranque = new Arranque();
+    private VentanaServ ventana;
+    
+    public Servidor(){
+    }
 
+    public Arranque getArranque(){
+        return arranque;
+    }
     public void iniciarServ() {
         try {
             servidor = new ServerSocket(5002);
             System.out.println("Servidor Arrancando....");
             arranque.crearSimulacionSegundoPlano();
-            while (true) {
+            System.out.println("Servidor Arrancando....1");
+            /*while (true) {
                 Socket cliente = servidor.accept();
                 new Thread(() -> conexionCliente(cliente)).start();
-            }
+            }*/
         } catch (IOException e) {
             System.out.println("Error al iniciar server");
         }

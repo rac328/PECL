@@ -8,34 +8,40 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.Thread.sleep;
+import Visuals.ApocalipsisZombi.*;
 
 public class Arranque {
     private int num = 0;
     private ZonaDescanso zonaDescanso;
+    private VentanaServ vent = new VentanaServ(this);
     private ZonaComun zonaComun;
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Comedor comedor = new Comedor();
+    private Comedor comedor = new Comedor(vent);
     private Pausa pausa = new Pausa();
-    private String[] idHumanos = new String[5];
-    private String[] idZombie = new String[5];
+    private String[] idHumanos = new String[6];
+    private String[] idZombie = new String[6];
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
+    public Arranque(){
+        vent.setVisible(true);
+    }
+    
     private void iniciarSimulacion() {
 
         for (int i = 0; i < 4; i++) {
-            arrayZonaRiesgo[i] = new ZonaRiesgo();
+            arrayZonaRiesgo[i] = new ZonaRiesgo(i, vent);
         }
 
         for (int i = 0; i < 4; i++) {
-            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i]);
+            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i], vent);
         }
 
-        zonaComun = new ZonaComun(arrayTunel);
-        zonaDescanso = new ZonaDescanso();
+        zonaComun = new ZonaComun(arrayTunel, vent);
+        zonaDescanso = new ZonaDescanso(vent);
         //creacion zombie
         idZombie[0] = "Z";
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 5; i++) {
             idZombie[i] = "0";
         }
         new Zombie(idZombie, 0, arrayZonaRiesgo, pausa).start();
@@ -48,14 +54,15 @@ public class Arranque {
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
 
-                        String num = String.format("%04d", contadorHumano);
+                        String num = String.format("%05d", contadorHumano);
                         idHumanos[0] = "H";
                         idHumanos[1] = String.valueOf(num.charAt(0));
                         idHumanos[2] = String.valueOf(num.charAt(1));
                         idHumanos[3] = String.valueOf(num.charAt(2));
                         idHumanos[4] = String.valueOf(num.charAt(3));
+                        idHumanos[5] = String.valueOf(num.charAt(4));
 
-                        System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]);
+                        System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]+idHumanos[5]);
                         new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, pausa).start();
                         contadorHumano++;
 

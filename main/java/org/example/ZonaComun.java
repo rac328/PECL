@@ -6,21 +6,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.SwingUtilities;
+import Visuals.ApocalipsisZombi.*;
 
 public class ZonaComun implements Serializable {
 
     private Tunel[] arrayTunel;
     private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
-    //private Ventana ventana;
+    private VentanaServ ventana;
 
-    public ZonaComun(Tunel[] at) {
+    public ZonaComun(Tunel[] at, VentanaServ vServ) {
         arrayTunel = at;
+        ventana = vServ;
 
     }
 
     public void entrarZonaComun(Humano hu) {
         listaHumanos.add(hu);
-
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZonaComun();
+            }
+        });
         Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la Zona Común.");
     }
 
@@ -38,7 +44,11 @@ public class ZonaComun implements Serializable {
         System.out.println("La elección del tunel" + eleccion);
         Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
         listaHumanos.remove(hu);
-
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZonaComun();
+            }
+        });
         arrayTunel[eleccion].irExterior(hu);
         if (!hu.isMuerto()) {
             arrayTunel[eleccion].venirDelExterior(hu);

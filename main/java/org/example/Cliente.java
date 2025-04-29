@@ -12,10 +12,10 @@ import Visuals.ApocalipsisZombi.*;
 
 public class Cliente {
 
-    private Ventana ventana;
+    private VentanaServ ventana;
     private boolean seguir = true;
 
-    public Cliente(Ventana vent) {
+    public Cliente(VentanaServ vent) {
         ventana = vent;
     }
 
@@ -34,7 +34,7 @@ public class Cliente {
                     }
                 }
                 LinkedBlockingQueue<Humano> listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                ventana.actualizarHumanosComedor(listaComedorRecibida);
+                //ventana.actualizarHumanosComedor(listaComedorRecibida);
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Error");
@@ -61,7 +61,7 @@ public class Cliente {
             salida.writeUTF("PAUSAR");
             cliente.close();
         } catch (IOException e) {
-            System.out.println("Error al pausar el servidor: " + e.getMessage());
+            System.out.println("Error al pausar el servidor");
         }
     }
 
@@ -74,13 +74,13 @@ public class Cliente {
             salida.writeUTF("REANUDAR");
             cliente.close();
         } catch (IOException e) {
-            System.out.println("Error al reanudar el servidor: " + e.getMessage());
+            System.out.println("Error al reanudar el servidor");
         }
     }
 
     public static void main(String args[]) {
         //crear ventana
-        Ventana ventana = new Ventana();
+       /* VentanaServ ventana = new VentanaServ();
 
         //crear cliente con ventana
         Cliente cliente = new Cliente(ventana);
@@ -89,6 +89,6 @@ public class Cliente {
         new Thread(() -> cliente.conectarServ()).start();
 
         //mostrar ventana
-        ventana.setVisible(true);
+        ventana.setVisible(true);*/
     }
 }

@@ -1,19 +1,24 @@
 package org.example;
 
+import Visuals.ApocalipsisZombi.VentanaServ;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import javax.swing.SwingUtilities;
 
 public class ZonaRiesgo implements Serializable {
 
     private LinkedBlockingQueue<Zombie> listaZombies = new LinkedBlockingQueue<>();
     private ArrayList<Humano> listaHumanos = new ArrayList<>();
+    private int id;
+    private VentanaServ ventana;
 
-    public ZonaRiesgo(){
-
+    public ZonaRiesgo(int pid, VentanaServ vent) {
+        id = pid;
+        ventana = vent;
     }
 
     public List<Humano> getListaHumanos() {
@@ -24,27 +29,48 @@ public class ZonaRiesgo implements Serializable {
         return listaZombies;
     }
 
-    public synchronized void entrarHumano(Humano hu){
+    public synchronized void entrarHumano(Humano hu) {
         notifyAll();
         listaHumanos.add(hu);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZP(id);
+            }
+        });
+
     }
 
-    public void salirHumano(Humano hu){
+    public void salirHumano(Humano hu) {
         listaHumanos.remove(hu);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZP(id);
+            }
+        });
     }
 
-    public void entrarZombie(Zombie zo){
+    public void entrarZombie(Zombie zo) {
         listaZombies.add(zo);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarZombiesZP(id);
+            }
+        });
     }
 
-    public void salirZombie(Zombie zo){
+    public void salirZombie(Zombie zo) {
         listaZombies.remove(zo);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarZombiesZP(id);
+            }
+        });
     }
 
     public synchronized Humano devolverHumanoAleatorio(ZonaRiesgo zonaActual) {
-        if (zonaActual.getListaHumanos().isEmpty()){
+        if (zonaActual.getListaHumanos().isEmpty()) {
             return null;
-        }else{
+        } else {
             int numHumanos = zonaActual.getListaHumanos().size();
             int rand2 = (int) (numHumanos * Math.random());
             Humano huAtacado = (Humano) zonaActual.getListaHumanos().get(rand2);
