@@ -186,7 +186,7 @@ public class VentanaServ extends javax.swing.JFrame {
         } else if (id == 1) {
             jListZombis1.removeAll();
             DefaultListModel<String> model = new DefaultListModel<>();
-            for (Zombie zo : arr.getArrayZonaRiesgo()[0].getListaZombies()) {
+            for (Zombie zo : arr.getArrayZonaRiesgo()[1].getListaZombies()) {
                 model.addElement(zo.getIdZombie());
             }
             jListZombis1.setModel(model);

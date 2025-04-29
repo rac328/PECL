@@ -1,9 +1,5 @@
 package org.example;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,11 +13,12 @@ public class Arranque {
     private ZonaComun zonaComun;
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Comedor comedor = new Comedor(vent);
     private Pausa pausa = new Pausa();
     private String[] idHumanos = new String[6];
     private String[] idZombie = new String[6];
     private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private Logger logger = new Logger();
+    private Comedor comedor = new Comedor(logger, vent);
 
     public Arranque(){
         vent.setVisible(true);
@@ -30,21 +27,21 @@ public class Arranque {
     private void iniciarSimulacion() {
 
         for (int i = 0; i < 4; i++) {
-            arrayZonaRiesgo[i] = new ZonaRiesgo(i, vent);
+            arrayZonaRiesgo[i] = new ZonaRiesgo(i, logger, vent);
         }
 
         for (int i = 0; i < 4; i++) {
-            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i], vent);
+            arrayTunel[i] = new Tunel(i, arrayZonaRiesgo[i], logger,vent);
         }
 
-        zonaComun = new ZonaComun(arrayTunel, vent);
-        zonaDescanso = new ZonaDescanso(vent);
+        zonaComun = new ZonaComun(arrayTunel, logger, vent);
+        zonaDescanso = new ZonaDescanso(logger, vent);
         //creacion zombie
         idZombie[0] = "Z";
         for (int i = 1; i <= 5; i++) {
             idZombie[i] = "0";
         }
-        new Zombie(idZombie, 0, arrayZonaRiesgo, pausa).start();
+        new Zombie(idZombie, 0, arrayZonaRiesgo, pausa, logger).start();
 
         //creacion humanos
         int contadorHumano = 1;

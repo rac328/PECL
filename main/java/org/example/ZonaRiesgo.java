@@ -15,10 +15,12 @@ public class ZonaRiesgo implements Serializable {
     private ArrayList<Humano> listaHumanos = new ArrayList<>();
     private int id;
     private VentanaServ ventana;
+    private Logger logger;
 
-    public ZonaRiesgo(int pid, VentanaServ vent) {
+    public ZonaRiesgo(int pid, Logger log, VentanaServ vent) {
         id = pid;
         ventana = vent;
+        logger = log;
     }
 
     public List<Humano> getListaHumanos() {

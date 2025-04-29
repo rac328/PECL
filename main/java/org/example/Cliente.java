@@ -1,21 +1,23 @@
 package org.example;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.Console.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import Visuals.ApocalipsisZombi.*;
 
+import static java.lang.Thread.sleep;
+
 public class Cliente {
 
-    private VentanaServ ventana;
+    private VentanaCli ventana;
     private boolean seguir = true;
+    private Boolean parar = false;
 
-    public Cliente(VentanaServ vent) {
+    public Cliente(VentanaCli vent) {
         ventana = vent;
     }
 
@@ -24,20 +26,27 @@ public class Cliente {
         try {
             cliente = new Socket(InetAddress.getLocalHost(), 5002); // Conectar al servidor
             ObjectInputStream ois = new ObjectInputStream(cliente.getInputStream());
-
+            ObjectOutputStream oos = new ObjectOutputStream(cliente.getOutputStream());
             while (true) {
-                synchronized (this) {
-                    if (!seguir) {
-                        while (!seguir) {
-                        wait();
-                    }
+                if (parar){
+                    oos.writeObject(parar);
+                    oos.flush();
+                    oos.reset();
+                    sleep(8000);
+                    cambiarEstadoParar();
+                }
+                else{
+                    LinkedBlockingQueue<Humano> listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+                    int rand = (int) (Math.random()*3+0);
+                    System.out.println(rand);
+                    if(rand == 0){
+                        pausarServidor();
                     }
                 }
-                LinkedBlockingQueue<Humano> listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                //ventana.actualizarHumanosComedor(listaComedorRecibida);
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Error");
+            throw new RuntimeException(e);
         }
     }
 
@@ -45,50 +54,32 @@ public class Cliente {
         return !seguir;
     }
 
-    public synchronized void cambiarEstadoSeguir() {
-        seguir = !seguir;
-        if (seguir) {
-            notify();
-        }
+    public synchronized void cambiarEstadoParar() {
+        parar = !parar;
     }
 
     public void pausarServidor() {
-        try {
-            Socket cliente = new Socket(InetAddress.getLocalHost(), 5002); //conectar
-            DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());
-
-            // enviar mensaje al servidor para pausar
-            salida.writeUTF("PAUSAR");
-            cliente.close();
-        } catch (IOException e) {
-            System.out.println("Error al pausar el servidor");
-        }
+       parar = true;
     }
 
     public void reanudarServidor() {
-        try {
-            Socket cliente = new Socket(InetAddress.getLocalHost(), 5002); //conectar
-            DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());
-
-            // enviar mensaje al servidor para seguir
-            salida.writeUTF("REANUDAR");
-            cliente.close();
-        } catch (IOException e) {
-            System.out.println("Error al reanudar el servidor");
-        }
+       parar = true;
     }
 
     public static void main(String args[]) {
-        //crear ventana
-       /* VentanaServ ventana = new VentanaServ();
+        VentanaCli ventana = new VentanaCli();
+        Cliente cliente = new Cliente(ventana);
+        new Thread(() -> cliente.conectarServ()).start();
+        /* VentanaServ ventana = new VentanaServ();
 
         //crear cliente con ventana
         Cliente cliente = new Cliente(ventana);
 
-        //crear cliente como hilo para no bloquear interfaz
+
         new Thread(() -> cliente.conectarServ()).start();
 
         //mostrar ventana
         ventana.setVisible(true);*/
+        //crear ventana
     }
 }

@@ -25,11 +25,13 @@ public class Tunel implements Serializable {
     private ZonaRiesgo zonaRiesgo;
     private ReentrantLock candado = new ReentrantLock();
     private Condition condicion = candado.newCondition();
+    private Logger logger;
     private VentanaServ ventana;
 
-    public Tunel(int pid, ZonaRiesgo zr, VentanaServ vServ) {
+    public Tunel(int pid, ZonaRiesgo zr, Logger log, VentanaServ vServ) {
         id = pid;
         zonaRiesgo = zr;
+        logger = log;
         ventana = vServ;
     }
 
@@ -60,9 +62,9 @@ public class Tunel implements Serializable {
                 }
             });
             if (esperar.getNumberWaiting() + 1 == 3) {
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha llegado al tunel " + id + " y ya son 3. Listos para salir!");
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " ha llegado al tunel " + id + " y ya son 3. Listos para salir!");
             } else {
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando para salir por el tunel " + id + ". Humanos esperando: " + (1 + esperar.getNumberWaiting()));
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando para salir por el tunel " + id + ". Humanos esperando: " + (1 + esperar.getNumberWaiting()));
             }
             hu.comprobarPausaHumano();
             esperar.await();
@@ -74,12 +76,12 @@ public class Tunel implements Serializable {
                 // if(id == 2){System.out.println("negro");}
                 hu.comprobarPausaHumano();
                 while (!listaRegresar.isEmpty()) {
-                    Logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a que entre otro humano al refugio por el tunel " + id);
+                    logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a que entre otro humano al refugio por el tunel " + id);
                     condicion.await();
                 }
                 hu.comprobarPausaHumano();
                 pasar.acquire();
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " está pasando por el tunel " + id);
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " está pasando por el tunel " + id);
                 esperarAntes.release();
                 listaPasar.remove(hu);
                 SwingUtilities.invokeLater(new Runnable() {
@@ -100,14 +102,14 @@ public class Tunel implements Serializable {
                         ventana.actualizarListaPasandoTunel(getId());
                     }
                 });
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de pasar por el tunel " + id);
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de pasar por el tunel " + id);
                 pasar.release();
                 hu.comprobarPausaHumano();
             } finally {
                 candado.unlock();
             }
             hu.comprobarPausaHumano();
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la zona de riesgo " + id);
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la zona de riesgo " + id);
             zonaRiesgo.entrarHumano(hu);
             sleep((long) (Math.random() * 3000 + 2000));
             hu.comprobarPausaHumano();
@@ -124,12 +126,12 @@ public class Tunel implements Serializable {
         try {
             hu.comprobarPausaHumano();
             zonaRiesgo.salirHumano(hu);
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado en la zona de riesgo " + id + " y vuelve al refugio");
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado en la zona de riesgo " + id + " y vuelve al refugio");
 
             if (hu.getMarcado()) {
-                Logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " marcado y sin comida.");
+                logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " marcado y sin comida.");
             } else {
-                Logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " con comida.");
+                logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " con comida.");
             }
             listaRegresar.add(hu);
             SwingUtilities.invokeLater(new Runnable() {
@@ -137,7 +139,7 @@ public class Tunel implements Serializable {
                     ventana.actualizarListaRegresarTunel(getId());
                 }
             });
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a entrar por el tunel " + id);
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a entrar por el tunel " + id);
             pasar.acquire();
             listaRegresar.remove(hu);
             SwingUtilities.invokeLater(new Runnable() {
@@ -151,7 +153,7 @@ public class Tunel implements Serializable {
                     ventana.actualizarListaPasandoTunel(getId());
                 }
             });
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " volviendo por el tunel " + id);
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " volviendo por el tunel " + id);
             sleep(1000);
             listaPasando.remove(hu);
             SwingUtilities.invokeLater(new Runnable() {
@@ -159,7 +161,7 @@ public class Tunel implements Serializable {
                     ventana.actualizarListaPasandoTunel(getId());
                 }
             });
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " pasando por el tunel " + id);
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " pasando por el tunel " + id);
             pasar.release();
 
             candado.lock();

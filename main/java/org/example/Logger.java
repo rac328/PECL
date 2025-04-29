@@ -16,10 +16,10 @@ import java.util.concurrent.Semaphore;
  * @author Alex y Raul
  */
 public class Logger {
-    private static final String FICHERO = "apocalipsis.txt"; //static = que la variable pertenece a la clase y no al objeto, unica y compartida entre todos los que usen la clase
-    private static final Semaphore sem = new Semaphore(1, true); //final = la variable no puede cambiarse despues de ser inicializada
+    private String FICHERO = "apocalipsis.txt"; //static = que la variable pertenece a la clase y no al objeto, unica y compartida entre todos los que usen la clase
+    private Semaphore sem = new Semaphore(1, true); //final = la variable no puede cambiarse despues de ser inicializada
     
-    public static void escribir(String msg){
+    public void escribir(String msg){
         try{
             sem.acquire();
             try{

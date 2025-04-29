@@ -19,9 +19,11 @@ public class Comedor {
     private Condition noComida = comidaEsperar.newCondition();
     private VentanaServ ventana;
     private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
+    private Logger logger;
 
-    public Comedor(VentanaServ vent) {
+    public Comedor(Logger log, VentanaServ vent) {
         ventana = vent;
+        logger = log;
     }
 
     public void depositarComida(Humano hu) {
@@ -39,7 +41,7 @@ public class Comedor {
                     ventana.actualizarComida();
                 }
             });
-            Logger.escribir("El humano " + hu.getIdHumanoStr() + " ha traido 2 piezas de comida. Comida restante: " + comidaDisponible.toString());
+            logger.escribir("El humano " + hu.getIdHumanoStr() + " ha traido 2 piezas de comida. Comida restante: " + comidaDisponible.toString());
             comidaEsperar.lock();
             noComida.signalAll();
             comidaEsperar.unlock();
@@ -67,7 +69,7 @@ public class Comedor {
                     });
 
                     while (comidaDisponible.get() == 0) {
-                        Logger.escribir("El humano " + hu.getIdHumanoStr() + " esta esperando para comer pero no hay comida.");
+                        logger.escribir("El humano " + hu.getIdHumanoStr() + " esta esperando para comer pero no hay comida.");
                         noComida.await();
                     }
                     comidaDisponible.decrementAndGet();
@@ -76,14 +78,14 @@ public class Comedor {
                             ventana.actualizarComida();
                         }
                     });
-                    Logger.escribir("El humano " + hu.getIdHumanoStr() + " esta comiendo. Comida restante: " + comidaDisponible.toString());
+                    logger.escribir("El humano " + hu.getIdHumanoStr() + " esta comiendo. Comida restante: " + comidaDisponible.toString());
                 } finally {
                     comidaEsperar.unlock();
                 }
                 comer.release();
 
                 sleep(3000 + (int) (2000 * Math.random()));
-                Logger.escribir("El humano " + hu.getIdHumanoStr() + " ha terminado de comer.");
+                logger.escribir("El humano " + hu.getIdHumanoStr() + " ha terminado de comer.");
                 listaComedor.remove(hu);
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {

@@ -12,9 +12,11 @@ public class ZonaDescanso implements Serializable {
 
     private LinkedBlockingQueue<Humano> listaDescansando = new LinkedBlockingQueue<>();
     private VentanaServ ventana;
+    private Logger logger;
 
-    public ZonaDescanso(VentanaServ vent) {
+    public ZonaDescanso(Logger log, VentanaServ vent) {
         ventana = vent;
+        logger = log;
     }
 
     public LinkedBlockingQueue<Humano> getListaHumanosDescansando() {
@@ -31,7 +33,7 @@ public class ZonaDescanso implements Serializable {
                             ventana.actualizarHumanosDescansando();
                         }
                     });
-                    Logger.escribir("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
+                    logger.escribir("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
                 }
                 sleep(2000 + (int) (2000 * Math.random()));
                 synchronized (this) {
@@ -41,7 +43,7 @@ public class ZonaDescanso implements Serializable {
                             ventana.actualizarHumanosDescansando();
                         }
                     });
-                    Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
+                    logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
                 }
             } catch (InterruptedException ie) {
                 System.out.println("Error descansar al volver humano " + hu.getIdHumanoStr());
@@ -60,7 +62,7 @@ public class ZonaDescanso implements Serializable {
                         ventana.actualizarHumanosDescansando();
                     }
                 });
-                Logger.escribir("Humano marcado " + hu.getIdHumanoStr() + " está descansando tras ser atacado para curarse.");
+                logger.escribir("Humano marcado " + hu.getIdHumanoStr() + " está descansando tras ser atacado para curarse.");
                 hu.setMarcado(false);
             }
             sleep(3000 + (int) (2000 * Math.random()));
@@ -71,7 +73,7 @@ public class ZonaDescanso implements Serializable {
                         ventana.actualizarHumanosDescansando();
                     }
                 });
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " se ha curado y ya no esta marcado.");
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " se ha curado y ya no esta marcado.");
             }
         } catch (InterruptedException ie) {
             System.out.println("Error descansar humano marcado " + hu.getIdHumanoStr());

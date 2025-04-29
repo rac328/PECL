@@ -13,11 +13,12 @@ public class ZonaComun implements Serializable {
     private Tunel[] arrayTunel;
     private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
     private VentanaServ ventana;
+    private Logger logger;
 
-    public ZonaComun(Tunel[] at, VentanaServ vServ) {
+    public ZonaComun(Tunel[] at, Logger log, VentanaServ vServ) {
         arrayTunel = at;
         ventana = vServ;
-
+        logger = log;
     }
 
     public void entrarZonaComun(Humano hu) {
@@ -27,12 +28,12 @@ public class ZonaComun implements Serializable {
                 ventana.actualizarHumanosZonaComun();
             }
         });
-        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la Zona Común.");
+        logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la Zona Común.");
     }
 
     public void prepararse(Humano hu) {
         try {
-            Logger.escribir("Humano " + hu.getIdHumanoStr() + " se esta preparando.");
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " se esta preparando.");
             sleep((long) (Math.random() * 1000 + 1000));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -42,7 +43,7 @@ public class ZonaComun implements Serializable {
     public void vidaFueraRefugio(Humano hu) {
         int eleccion = (int) (Math.random() * 4);
         System.out.println("La elección del tunel" + eleccion);
-        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
+        logger.escribir("Humano " + hu.getIdHumanoStr() + " ha decidido salir de la Zona Común por el tunel " + eleccion);
         listaHumanos.remove(hu);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

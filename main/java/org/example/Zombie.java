@@ -9,12 +9,14 @@ public class Zombie extends Thread implements Serializable {
     private String[] id = new String[6];
     private ZonaRiesgo[] arrayZonaRiesgo;
     private transient Pausa pausa;
+    Logger logger;
 
-    public Zombie(String[] identificador, int contadorM, ZonaRiesgo[] zr, Pausa pa) {
+    public Zombie(String[] identificador, int contadorM, ZonaRiesgo[] zr, Pausa pa, Logger log) {
         id = identificador;
         contadorMuertes = contadorM;
         arrayZonaRiesgo = zr;
         pausa = pa;
+        logger = log;
     }
 
     public String getIdZombie() {
@@ -30,6 +32,7 @@ public class Zombie extends Thread implements Serializable {
             while (true) {
                 pausa.comprobarPausa();
                 int rand1 = (int) (4 * Math.random());
+                logger.escribir("El zombie " + getIdZombie() + " entra a la zona de riesgo " + rand1);
                 ZonaRiesgo zonaActual = arrayZonaRiesgo[rand1];
                 pausa.comprobarPausa();
                 zonaActual.entrarZombie(this);
@@ -46,6 +49,7 @@ public class Zombie extends Thread implements Serializable {
                 }
                 sleep(2000 + (int) (1000 * Math.random()));
                 pausa.comprobarPausa();
+                logger.escribir("El zombie " + getIdZombie() + " sale a la zona de riesgo " + rand1);
                 zonaActual.salirZombie(this);
                 pausa.comprobarPausa();
             }
@@ -68,13 +72,13 @@ public class Zombie extends Thread implements Serializable {
                 pausa.comprobarPausa();
                 String[] idZ = new String[]{"Z", idH[1], idH[2], idH[3], idH[4], idH[5]};
 
-                new Zombie(idZ, 0, arrayZonaRiesgo, pausa).start();
+                new Zombie(idZ, 0, arrayZonaRiesgo, pausa, logger).start();
                 pausa.comprobarPausa();
                 contadorMuertes++;
             }
             else {
                 pausa.comprobarPausa();
-                Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
+                logger.escribir("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
                 hu.setMarcado(true);
                 //El zombie realiza un await en la cyclic barrier para que el humano y el zombie sigan con la ejecución
                 hu.Defensa();
@@ -89,7 +93,7 @@ public class Zombie extends Thread implements Serializable {
 
     public void matarHumano(Humano hu, ZonaRiesgo zonaActual) {
         pausa.comprobarPausa();
-        Logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie() + " y ahora tambien es un zombie.");
+        logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie() + " y ahora tambien es un zombie.");
         hu.morir();
     }
 
