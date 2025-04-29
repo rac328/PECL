@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 public class ZonaRiesgo implements Serializable {
 
     private LinkedBlockingQueue<Zombie> listaZombies = new LinkedBlockingQueue<>();
-    private ArrayList<Humano> listaHumanos = new ArrayList<>();
+    private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();
     private int id;
     private VentanaServ ventana;
     private Logger logger;
@@ -23,7 +23,7 @@ public class ZonaRiesgo implements Serializable {
         logger = log;
     }
 
-    public List<Humano> getListaHumanos() {
+    public LinkedBlockingQueue<Humano> getListaHumanos() {
         return listaHumanos;
     }
 

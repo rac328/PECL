@@ -24,6 +24,7 @@ public class Servidor {
     public Arranque getArranque(){
         return arranque;
     }
+
     public void iniciarServ() {
         try {
             servidor = new ServerSocket(5002);
@@ -55,35 +56,25 @@ public class Servidor {
                     arranque.reanudarEjecucion();
                     LinkedBlockingQueue<Humano> listaComedor = arranque.getComedor().getListaHumanosComedor();
                     oos.writeObject(listaComedor);
+                    LinkedBlockingQueue<Humano> listaZonaComun = arranque.getZonaComun().getListaHumanosZonaComun();
+                    oos.writeObject(listaZonaComun);
+                    LinkedBlockingQueue<Humano> listaZonaDescanso = arranque.getZonaDescanso().getListaHumanosDescansando();
+
+                    LinkedBlockingQueue<Humano> listaZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaHumanos();
+                    LinkedBlockingQueue<Humano> listaZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaHumanos();
+                    LinkedBlockingQueue<Humano> listaZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaHumanos();
+                    LinkedBlockingQueue<Humano> listaZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaHumanos();
+
+                    
+
+
                     oos.flush();
                     oos.reset();
                     System.out.println("A");
                     parar = (Boolean) ois.readObject();
                     System.out.println("El cliente envia un "+parar.booleanValue());
                 }
-
-
-
-                /*
-                if (dis.available() > 0) {
-                    String msg = dis.readUTF();
-                    if (msg.equals("PAUSAR")) {
-                        seguir = false;
-                        arranque.pausarEjecucion();
-                        System.out.println("Servidor pausado");
-                    } else if (msg.equals("REANUDAR")) {
-                        seguir = true;
-                        arranque.reanudarEjecucion();
-                        synchronized (this){
-                            notify();
-                        }
-                        System.out.println("Servidor reanudado");
-                    }
-                }
-                */
-
             }
-
         }
         catch (IOException | ClassNotFoundException e) {
             System.out.println("Error en la conexion con el cliente");
