@@ -16,6 +16,34 @@ public class Cliente {
     private VentanaCli ventana;
     private boolean seguir = true;
     private Boolean parar = false;
+    LinkedBlockingQueue<Humano> listaComedorRecibida;
+    LinkedBlockingQueue<Humano> listaZonacomunRecibida;
+    LinkedBlockingQueue<Humano> listaZonaDescansoRecibida;
+
+    ArrayList<Humano> listaZonaRiesgoRecibida1;
+    ArrayList<Humano> listaZonaRiesgoRecibida2;
+    ArrayList<Humano> listaZonaRiesgoRecibida3;
+    ArrayList<Humano> listaZonaRiesgoRecibida4;
+
+    LinkedBlockingQueue<Humano> listaPasarTunelRecibida1;
+    LinkedBlockingQueue<Humano> listaPasarTunelRecibida2;
+    LinkedBlockingQueue<Humano> listaPasarTunelRecibida3;
+    LinkedBlockingQueue<Humano> listaPasarTunelRecibida4;
+
+    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida1;
+    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida2;
+    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida3;
+    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida4;
+
+    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida1;
+    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida2;
+    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida3;
+    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida4;
+
+    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo1;
+    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo2;
+    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo3;
+    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo4;
 
     public Cliente(VentanaCli vent) {
         ventana = vent;
@@ -28,6 +56,49 @@ public class Cliente {
             ObjectInputStream ois = new ObjectInputStream(cliente.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(cliente.getOutputStream());
             while (true) {
+                oos.writeObject(parar);
+                oos.flush();
+                oos.reset();
+
+                //Listas de la zona segura
+                listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaZonacomunRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaZonaDescansoRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+
+                //Listas de humanos en zonas de riesgo
+                listaZonaRiesgoRecibida1 = (ArrayList<Humano>) ois.readObject();
+                listaZonaRiesgoRecibida2 = (ArrayList<Humano>) ois.readObject();
+                listaZonaRiesgoRecibida3 = (ArrayList<Humano>) ois.readObject();
+                listaZonaRiesgoRecibida4 = (ArrayList<Humano>) ois.readObject();
+
+                //Listas de humanos para pasar por los túneles
+                listaPasarTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasarTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasarTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasarTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+
+                //Listas de humanos pasando por los tuneles
+                listaPasandoTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasandoTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasandoTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasandoTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+
+                //Listas de humanos regresando por los tuneles
+                listaRegresandoTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaRegresandoTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaRegresandoTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaRegresandoTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+
+                //Listas de Zombies en la zona de Riesgo
+                listaZombieZonaRiesgo1 = (LinkedBlockingQueue<Zombie>) ois.readObject();
+                listaZombieZonaRiesgo2 = (LinkedBlockingQueue<Zombie>) ois.readObject();
+                listaZombieZonaRiesgo3 = (LinkedBlockingQueue<Zombie>) ois.readObject();
+                listaZombieZonaRiesgo4 = (LinkedBlockingQueue<Zombie>) ois.readObject();
+
+                sleep(8000);
+                cambiarEstadoParar();
+
+                /*
                 if (parar){
                     oos.writeObject(parar);
                     oos.flush();
@@ -42,7 +113,7 @@ public class Cliente {
                     if(rand == 0){
                         pausarServidor();
                     }
-                }
+                }*/
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Error");
@@ -54,7 +125,7 @@ public class Cliente {
         return !seguir;
     }
 
-    public synchronized void cambiarEstadoParar() {
+    public void cambiarEstadoParar() {
         parar = !parar;
     }
 
