@@ -1,19 +1,17 @@
 package org.example;
 
 import java.io.Serializable;
-import java.util.concurrent.Semaphore;
 
 public class Zombie extends Thread implements Serializable {
 
-    private int contadorMuertes;
+    private int contadorMuertes = 0;
     private String[] id = new String[6];
-    private ZonaRiesgo[] arrayZonaRiesgo;
+    private transient ZonaRiesgo[] arrayZonaRiesgo;
     private transient Pausa pausa;
-    Logger logger;
+    private transient Logger logger;
 
-    public Zombie(String[] identificador, int contadorM, ZonaRiesgo[] zr, Pausa pa, Logger log) {
+    public Zombie(String[] identificador, ZonaRiesgo[] zr, Pausa pa, Logger log) {
         id = identificador;
-        contadorMuertes = contadorM;
         arrayZonaRiesgo = zr;
         pausa = pa;
         logger = log;
@@ -72,7 +70,7 @@ public class Zombie extends Thread implements Serializable {
                 pausa.comprobarPausa();
                 String[] idZ = new String[]{"Z", idH[1], idH[2], idH[3], idH[4], idH[5]};
 
-                new Zombie(idZ, 0, arrayZonaRiesgo, pausa, logger).start();
+                new Zombie(idZ, arrayZonaRiesgo, pausa, logger).start();
                 pausa.comprobarPausa();
                 contadorMuertes++;
             }

@@ -13,11 +13,11 @@ public class Arranque {
     private ZonaComun zonaComun;
     private Tunel[] arrayTunel = new Tunel[4];
     private ZonaRiesgo[] arrayZonaRiesgo = new ZonaRiesgo[4];
-    private Pausa pausa = new Pausa();
+    private Logger logger = new Logger();
+    private Pausa pausa = new Pausa(logger);
     private String[] idHumanos = new String[6];
     private String[] idZombie = new String[6];
     private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Logger logger = new Logger();
     private Comedor comedor = new Comedor(logger, vent);
 
     public Arranque(){
@@ -41,7 +41,7 @@ public class Arranque {
         for (int i = 1; i <= 5; i++) {
             idZombie[i] = "0";
         }
-        new Zombie(idZombie, 0, arrayZonaRiesgo, pausa, logger).start();
+        new Zombie(idZombie, arrayZonaRiesgo, pausa, logger).start();
 
         //creacion humanos
         int contadorHumano = 1;

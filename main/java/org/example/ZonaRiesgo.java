@@ -31,8 +31,7 @@ public class ZonaRiesgo implements Serializable {
         return listaZombies;
     }
 
-    public synchronized void entrarHumano(Humano hu) {
-        notifyAll();
+    public void entrarHumano(Humano hu) {
         listaHumanos.add(hu);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

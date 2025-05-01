@@ -49,24 +49,40 @@ public class Cliente {
         ventana = vent;
     }
 
+
+
     public void conectarServ() {
         Socket cliente;
         try {
+            System.out.println("Hola");
             cliente = new Socket(InetAddress.getLocalHost(), 5002); // Conectar al servidor
+            System.out.println("Adios");
+
+
             ObjectInputStream ois = new ObjectInputStream(cliente.getInputStream());
+
+            System.out.println("Adios");
             ObjectOutputStream oos = new ObjectOutputStream(cliente.getOutputStream());
+
+            System.out.println("Adios");
             while (true) {
+                System.out.println(parar);
                 oos.writeObject(parar);
+                System.out.println(parar);
                 oos.flush();
                 oos.reset();
 
                 //Listas de la zona segura
                 listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+                System.out.println(listaComedorRecibida.toString());
                 listaZonacomunRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
                 listaZonaDescansoRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
 
                 //Listas de humanos en zonas de riesgo
                 listaZonaRiesgoRecibida1 = (ArrayList<Humano>) ois.readObject();
+                if(listaZonaRiesgoRecibida1 != null) {
+                    System.out.println(listaZonaRiesgoRecibida1.toString());
+                }
                 listaZonaRiesgoRecibida2 = (ArrayList<Humano>) ois.readObject();
                 listaZonaRiesgoRecibida3 = (ArrayList<Humano>) ois.readObject();
                 listaZonaRiesgoRecibida4 = (ArrayList<Humano>) ois.readObject();
@@ -95,27 +111,10 @@ public class Cliente {
                 listaZombieZonaRiesgo3 = (LinkedBlockingQueue<Zombie>) ois.readObject();
                 listaZombieZonaRiesgo4 = (LinkedBlockingQueue<Zombie>) ois.readObject();
 
-                sleep(8000);
                 cambiarEstadoParar();
-
-                /*
-                if (parar){
-                    oos.writeObject(parar);
-                    oos.flush();
-                    oos.reset();
-                    sleep(8000);
-                    cambiarEstadoParar();
-                }
-                else{
-                    LinkedBlockingQueue<Humano> listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                    int rand = (int) (Math.random()*3+0);
-                    System.out.println(rand);
-                    if(rand == 0){
-                        pausarServidor();
-                    }
-                }*/
+                sleep(15000);
             }
-        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+        } catch (NullPointerException | IOException | ClassNotFoundException | InterruptedException e) {
             System.out.println("Error");
             throw new RuntimeException(e);
         }
@@ -141,16 +140,5 @@ public class Cliente {
         VentanaCli ventana = new VentanaCli();
         Cliente cliente = new Cliente(ventana);
         new Thread(() -> cliente.conectarServ()).start();
-        /* VentanaServ ventana = new VentanaServ();
-
-        //crear cliente con ventana
-        Cliente cliente = new Cliente(ventana);
-
-
-        new Thread(() -> cliente.conectarServ()).start();
-
-        //mostrar ventana
-        ventana.setVisible(true);*/
-        //crear ventana
     }
 }

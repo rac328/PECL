@@ -44,20 +44,25 @@ public class Servidor {
             ObjectOutputStream oos = new ObjectOutputStream(cli.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(cli.getInputStream());
 
-            DataInputStream dis = new DataInputStream(cli.getInputStream());
-
             while (true) {
 
+                System.out.println("PRIMERO "+parar);
+
                 parar = (Boolean) ois.readObject();
+                System.out.println("SEGUNDO "+parar);
+
                 if(parar){
                     arranque.pausarEjecucion();
+                    System.out.println("dENTRO DEL IF: " + parar);
                 }
                 else{
                     arranque.reanudarEjecucion();
+                    System.out.println("DENTRO DEL ELSE: " + parar);
                 }
 
                 //listas de la Zona Segura
                 LinkedBlockingQueue<Humano> listaComedor = arranque.getComedor().getListaHumanosComedor();
+                System.out.println(listaComedor.toString());
                 oos.writeObject(listaComedor);
                 LinkedBlockingQueue<Humano> listaZonaComun = arranque.getZonaComun().getListaHumanosZonaComun();
                 oos.writeObject(listaZonaComun);
@@ -67,6 +72,7 @@ public class Servidor {
                 //Listas de zonas de Riesgo
                 ArrayList<Humano> listaZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaHumanos();
                 oos.writeObject(listaZonaRiesgo1);
+                System.out.println(listaZonaRiesgo1.toString());
                 ArrayList<Humano> listaZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaHumanos();
                 oos.writeObject(listaZonaRiesgo2);
                 ArrayList<Humano> listaZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaHumanos();
@@ -114,54 +120,14 @@ public class Servidor {
                 LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaZombies();
                 oos.writeObject(listaZombieZonaRiesgo4);
 
-
-
-
-
                 oos.flush();
                 oos.reset();
-
-                /*if (parar.booleanValue()){
-                    System.out.println("SE PARAAAAAAAAAAAAAAA");
-                    arranque.pausarEjecucion();
-                    parar = (Boolean) ois.readObject();
-                }
-                else{
-                    arranque.reanudarEjecucion();
-
-                    //listas de la Zona Segura
-                    LinkedBlockingQueue<Humano> listaComedor = arranque.getComedor().getListaHumanosComedor();
-                    oos.writeObject(listaComedor);
-                    LinkedBlockingQueue<Humano> listaZonaComun = arranque.getZonaComun().getListaHumanosZonaComun();
-                    oos.writeObject(listaZonaComun);
-                    LinkedBlockingQueue<Humano> listaZonaDescanso = arranque.getZonaDescanso().getListaHumanosDescansando();
-
-                    //Listas de zonas de Riesgo
-                    LinkedBlockingQueue<Humano> listaZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaHumanos();
-                    oos.writeObject(listaZonaRiesgo1);
-                    LinkedBlockingQueue<Humano> listaZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaHumanos();
-                    oos.writeObject(listaZonaRiesgo2);
-                    LinkedBlockingQueue<Humano> listaZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaHumanos();
-                    oos.writeObject(listaZonaRiesgo3);
-                    LinkedBlockingQueue<Humano> listaZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaHumanos();
-                    oos.writeObject(listaZonaRiesgo4);
-
-                    
-
-
-                    oos.flush();
-                    oos.reset();
-                    System.out.println("A");
-                    parar = (Boolean) ois.readObject();
-                    System.out.println("El cliente envia un "+parar.booleanValue());
-                }*/
-
-
             }
         }
         catch (IOException | ClassNotFoundException e) {
             System.out.println("Error en la conexion con el cliente");
             throw new RuntimeException(e);
+
         }
     }
 

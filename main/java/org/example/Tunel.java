@@ -2,7 +2,6 @@ package org.example;
 
 import Visuals.ApocalipsisZombi.VentanaServ;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -53,64 +52,71 @@ public class Tunel implements Serializable {
 
     public void irExterior(Humano hu) {
         try {
-            hu.comprobarPausaHumano();
-            esperarAntes.acquire();
-            listaPasar.add(hu);
-            SwingUtilities.invokeLater(new Runnable() {
+            hu.comprobarPausaHumano(); //Comprueba la pausa de la ejecución
+            esperarAntes.acquire(); //Mira si hay hueco para pasar a la zona de espera
+            listaPasar.add(hu); // Se añade en la zona de espera
+            SwingUtilities.invokeLater(new Runnable() { //Se actualiza la ventana del servidor
                 public void run() {
                     ventana.actualizarListaPasarTunel(getId());
                 }
             });
+            // En función de la gente esperando se guarda en el log un mensaje u otro
             if (esperar.getNumberWaiting() + 1 == 3) {
                 logger.escribir("Humano " + hu.getIdHumanoStr() + " ha llegado al tunel " + id + " y ya son 3. Listos para salir!");
             } else {
                 logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando para salir por el tunel " + id + ". Humanos esperando: " + (1 + esperar.getNumberWaiting()));
             }
-            hu.comprobarPausaHumano();
-            esperar.await();
-            hu.comprobarPausaHumano();
+            hu.comprobarPausaHumano(); // Comprueba la pausa
+            esperar.await(); // Cyclic Barrier para esperar a que sean 3
+            hu.comprobarPausaHumano(); // Comprueba la pausa
 
             candado.lock();
             try {
-                //Quitar
-                // if(id == 2){System.out.println("negro");}
-                hu.comprobarPausaHumano();
+                hu.comprobarPausaHumano(); // Comprueba la pausa
+
+                // Mientras que la lista de gente que quiere regresar al refugio no esté vacía, entran al while para esperar
                 while (!listaRegresar.isEmpty()) {
                     logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a que entre otro humano al refugio por el tunel " + id);
                     condicion.await();
                 }
-                hu.comprobarPausaHumano();
-                pasar.acquire();
-                logger.escribir("Humano " + hu.getIdHumanoStr() + " está pasando por el tunel " + id);
-                esperarAntes.release();
-                listaPasar.remove(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarListaPasarTunel(getId());
-                    }
-                });
-                listaPasando.add(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarListaPasandoTunel(getId());
-                    }
-                });
-                sleep(1000);
-                listaPasando.remove(hu);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ventana.actualizarListaPasandoTunel(getId());
-                    }
-                });
-                logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de pasar por el tunel " + id);
-                pasar.release();
-                hu.comprobarPausaHumano();
             } finally {
                 candado.unlock();
             }
+
+            hu.comprobarPausaHumano(); // Comprueba la pausa
+            pasar.acquire(); // Toma el semáforo para que pasen de 1 en 1
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " está pasando por el tunel " + id);
+            esperarAntes.release(); // Se libera un token del semáforo de la zona de espera del tunel
+            listaPasar.remove(hu); // Se elimina de la lista que se muestra en la interfaz
+            SwingUtilities.invokeLater(new Runnable() { // Se actualiza la interfaz
+                public void run() {
+                        ventana.actualizarListaPasarTunel(getId());
+                    }
+            });
+            listaPasando.add(hu); //Se añade en la lista de personas pasando
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                        ventana.actualizarListaPasandoTunel(getId());
+                    }
+            });
+            sleep(1000); // 1000 milisegundos que es el tiempo que tarda en pasar
+            listaPasando.remove(hu); //Se elimina de la lista de personas pasando
+            SwingUtilities.invokeLater(new Runnable() { // Se actualiza la ventana
+                public void run() {
+                        ventana.actualizarListaPasandoTunel(getId());
+                    }
+            });
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de pasar por el tunel " + id);
+            pasar.release(); // Se libera el semáforo para que pase el siguiente
+            hu.comprobarPausaHumano(); //Comprueba la pausa
             hu.comprobarPausaHumano();
             logger.escribir("Humano " + hu.getIdHumanoStr() + " ha entrado a la zona de riesgo " + id);
             zonaRiesgo.entrarHumano(hu);
+            SwingUtilities.invokeLater(new Runnable() { // Se actualiza la ventana
+                public void run() {
+                    ventana.actualizarHumanosZP(getId());
+                }
+            });
             sleep((long) (Math.random() * 3000 + 2000));
             hu.comprobarPausaHumano();
 
