@@ -130,53 +130,72 @@ public class Tunel implements Serializable {
 
     public void venirDelExterior(Humano hu) {
         try {
-            hu.comprobarPausaHumano();
-            zonaRiesgo.salirHumano(hu);
+            hu.comprobarPausaHumano(); //Se comprueba si necesita parar la ejecución
+            zonaRiesgo.salirHumano(hu); //Sale de la Zona de Riesgo y se elimina de la lista
+
             logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado en la zona de riesgo " + id + " y vuelve al refugio");
 
+            //Si sale marcado se registra en el log
             if (hu.getMarcado()) {
                 logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " marcado y sin comida.");
             } else {
                 logger.escribir("Vuelve el humano " + hu.getIdHumanoStr() + " con comida.");
             }
-            listaRegresar.add(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarListaRegresarTunel(getId());
-                }
-            });
-            logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a entrar por el tunel " + id);
-            pasar.acquire();
-            listaRegresar.remove(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarListaRegresarTunel(getId());
-                }
-            });
-            listaPasando.add(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarListaPasandoTunel(getId());
-                }
-            });
-            logger.escribir("Humano " + hu.getIdHumanoStr() + " volviendo por el tunel " + id);
-            sleep(1000);
-            listaPasando.remove(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarListaPasandoTunel(getId());
-                }
-            });
-            logger.escribir("Humano " + hu.getIdHumanoStr() + " pasando por el tunel " + id);
-            pasar.release();
 
+            listaRegresar.add(hu); // Se añade en la lista de personas que quieren regresar
+
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ventana.actualizarListaRegresarTunel(getId());
+                }
+            });
+
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " esta esperando a entrar por el tunel " + id);
+
+            pasar.acquire(); //Toma el semáforo para pasar por la zona estrecha del túnel
+
+            listaRegresar.remove(hu); //Sale de lista de personas esperando para regresar
+
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ventana.actualizarListaRegresarTunel(getId());
+                }
+            });
+
+            listaPasando.add(hu); //Se añade a la lista de gente pasando por la zona estrecha
+
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ventana.actualizarListaPasandoTunel(getId());
+                }
+            });
+
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " volviendo por el tunel " + id);
+
+            sleep(1000); // Tiempo que tarda en pasar
+
+            listaPasando.remove(hu); // Se elimina de la lista de personas pasando una vez ha pasado el tiempo
+
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ventana.actualizarListaPasandoTunel(getId());
+                }
+            });
+
+            logger.escribir("Humano " + hu.getIdHumanoStr() + " pasando por el tunel " + id);
+
+            pasar.release(); // Libera el semáforo para que pase el siguiente
+
+            // Despierta a los hilos que estuvieran esperando para pasar a las zonas de riesgo
             candado.lock();
             try {
                 condicion.signalAll();
             } finally {
                 candado.unlock();
             }
-            hu.comprobarPausaHumano();
+
+            hu.comprobarPausaHumano(); // Comprueba la pausa de la ejecución
+
         } catch (InterruptedException e) {
             System.out.println("muerto");
         }
