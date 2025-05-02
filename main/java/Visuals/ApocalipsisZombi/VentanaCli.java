@@ -26,21 +26,245 @@ public class VentanaCli extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jToggleButtonParar = new javax.swing.JToggleButton();
+        jTextFieldTunel1 = new javax.swing.JTextField();
+        jTextFieldHumanosRefugio = new javax.swing.JTextField();
+        jTextFieldHumanosZR1 = new javax.swing.JTextField();
+        jTextFieldHumanosZR2 = new javax.swing.JTextField();
+        jTextFieldHumanosZR3 = new javax.swing.JTextField();
+        jTextFieldHumanosZR4 = new javax.swing.JTextField();
+        jTextFieldZombisZR1 = new javax.swing.JTextField();
+        jTextFieldZombisZR2 = new javax.swing.JTextField();
+        jTextFieldZombisZR3 = new javax.swing.JTextField();
+        jTextFieldZombisZR4 = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("NÚMERO DE HUMANOS EN EL REFUGIO");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("NÚMERO DE HUMANOS EN LAS ZONAS DE RIESGO");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("NÚMERO DE ZOMBIS EN LAS ZONAS DE RIESGO");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("NÚMERO DE HUMANOS EN LOS TÚNELES");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setText("ZOMBIS MÁS LETALES");
+
+        jList1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jScrollPane1.setViewportView(jList1);
+
+        jToggleButtonParar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jToggleButtonParar.setText("DETENER EJECUCIÓN");
+        jToggleButtonParar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonPararActionPerformed(evt);
+            }
+        });
+
+        jTextFieldTunel1.setEditable(false);
+        jTextFieldTunel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTunel1ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosRefugio.setEditable(false);
+        jTextFieldHumanosRefugio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosRefugioActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosZR1.setEditable(false);
+        jTextFieldHumanosZR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZR1ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosZR2.setEditable(false);
+        jTextFieldHumanosZR2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZR2ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosZR3.setEditable(false);
+        jTextFieldHumanosZR3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZR3ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosZR4.setEditable(false);
+        jTextFieldHumanosZR4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZR4ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldZombisZR1.setEditable(false);
+        jTextFieldZombisZR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldZombisZR1ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldZombisZR2.setEditable(false);
+        jTextFieldZombisZR2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldZombisZR2ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldZombisZR3.setEditable(false);
+        jTextFieldZombisZR3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldZombisZR3ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldZombisZR4.setEditable(false);
+        jTextFieldZombisZR4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldZombisZR4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(187, 187, 187)
+                            .addComponent(jToggleButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jTextFieldHumanosZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jTextFieldZombisZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldZombisZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldZombisZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldZombisZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldZombisZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jToggleButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jToggleButtonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonPararActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToggleButtonPararActionPerformed
+
+    private void jTextFieldTunel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTunel1ActionPerformed
+
+    private void jTextFieldHumanosRefugioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosRefugioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosRefugioActionPerformed
+
+    private void jTextFieldHumanosZR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZR1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZR1ActionPerformed
+
+    private void jTextFieldHumanosZR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZR2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZR2ActionPerformed
+
+    private void jTextFieldHumanosZR3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZR3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZR3ActionPerformed
+
+    private void jTextFieldHumanosZR4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZR4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZR4ActionPerformed
+
+    private void jTextFieldZombisZR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldZombisZR1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldZombisZR1ActionPerformed
+
+    private void jTextFieldZombisZR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldZombisZR2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldZombisZR2ActionPerformed
+
+    private void jTextFieldZombisZR3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldZombisZR3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldZombisZR3ActionPerformed
+
+    private void jTextFieldZombisZR4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldZombisZR4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldZombisZR4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +302,23 @@ public class VentanaCli extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextFieldHumanosRefugio;
+    private javax.swing.JTextField jTextFieldHumanosZR1;
+    private javax.swing.JTextField jTextFieldHumanosZR2;
+    private javax.swing.JTextField jTextFieldHumanosZR3;
+    private javax.swing.JTextField jTextFieldHumanosZR4;
+    private javax.swing.JTextField jTextFieldTunel1;
+    private javax.swing.JTextField jTextFieldZombisZR1;
+    private javax.swing.JTextField jTextFieldZombisZR2;
+    private javax.swing.JTextField jTextFieldZombisZR3;
+    private javax.swing.JTextField jTextFieldZombisZR4;
+    private javax.swing.JToggleButton jToggleButtonParar;
     // End of variables declaration//GEN-END:variables
 }
