@@ -19,11 +19,12 @@ public class Arranque {
     private String[] idZombie = new String[6];
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private Comedor comedor = new Comedor(logger, vent);
+    private Ranking ranking = new Ranking(arrayZonaRiesgo);
 
     public Arranque(){
         vent.setVisible(true);
     }
-    
+
     private void iniciarSimulacion() {
 
         for (int i = 0; i < 4; i++) {
@@ -62,7 +63,6 @@ public class Arranque {
                         System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]+idHumanos[5]);
                         new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, pausa).start();
                         contadorHumano++;
-
                         try {
                             sleep(500 + (int) (1500 * Math.random()));
                         } catch (InterruptedException ie) {
@@ -87,7 +87,7 @@ public class Arranque {
     public void pausarEjecucion(){
         pausa.pararEjecucion();
     }
-    
+
     public void reanudarEjecucion(){
         pausa.continuarEjecucion();
     }
@@ -110,5 +110,9 @@ public class Arranque {
 
     public Comedor getComedor() {
         return comedor;
+    }
+
+    public Ranking getRanking() {
+        return ranking;
     }
 }

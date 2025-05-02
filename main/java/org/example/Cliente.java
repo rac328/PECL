@@ -46,6 +46,7 @@ public class Cliente {
     private Integer listaZombieZonaRiesgo2;
     private Integer listaZombieZonaRiesgo3;
     private Integer listaZombieZonaRiesgo4;
+    private ArrayList<String> listaMejoresZombies;
 
     public Cliente() {
         ventana.setVisible(true);
@@ -103,9 +104,12 @@ public class Cliente {
                 listaZombieZonaRiesgo3 = (Integer) ois.readObject();
                 listaZombieZonaRiesgo4 = (Integer) ois.readObject();
 
+                //Mejores zombies
+                listaMejoresZombies = (ArrayList<String>) ois.readObject();
+                System.out.println(listaMejoresZombies);
                 //cambiarEstadoParar();
                 //sleep(10000);
-                
+
                 ventana.actualizarVentana();
             }
         } catch (NullPointerException | IOException | ClassNotFoundException e) {
@@ -225,5 +229,9 @@ public class Cliente {
 
     public Integer getListaComedorRecibida() {
         return listaComedorRecibida;
+    }
+
+    public ArrayList<String> getListaMejoresZombies() {
+        return listaMejoresZombies;
     }
 }

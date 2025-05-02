@@ -18,7 +18,7 @@ public class Servidor {
     private Arranque arranque = new Arranque();
     private VentanaServ ventana;
     private Boolean parar = false;
-    
+
     public Servidor(){
     }
 
@@ -119,6 +119,10 @@ public class Servidor {
                 oos.writeObject(listaZombieZonaRiesgo3);
                 int listaZombieZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaZombies().size();
                 oos.writeObject(listaZombieZonaRiesgo4);
+
+                ArrayList<String> listaMejoresZombies = arranque.getRanking().hacerRanking();
+                System.out.println(listaMejoresZombies);
+                oos.writeObject(listaMejoresZombies);
 
                 oos.flush();
                 oos.reset();

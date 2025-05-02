@@ -69,11 +69,11 @@ public class VentanaCli extends javax.swing.JFrame {
         jTextFieldZombisZR4.setText(""+cliente.getListaZombieZonaRiesgo4());
         
         //lista zombis mas mortales
-        //DefaultListModel<String> model = new DefaultListModel<>();
-        //for (int i = 0; i<listaRankingZombies.length(); i++) {
-        //        model.addElement(listaRankingZombies[i].getID() + " - " + listaRankingZombies[i].getMuertes());
-        //    }
-        //
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (int i = 0; i<cliente.getListaMejoresZombies().size(); i++) {
+                model.addElement(cliente.getListaMejoresZombies().get(i));
+            }
+
     }
 
     /**

@@ -25,16 +25,23 @@ public class Zombie extends Thread implements Serializable {
         return str;
     }
 
+    public int getContadorMuertes() {
+        return contadorMuertes;
+    }
+
     public void run() {
         try {
             while (true) {
-                pausa.comprobarPausa();
-                int rand1 = (int) (4 * Math.random());
+                pausa.comprobarPausa(); // Comprueba la pausa
+                int rand1 = (int) (4 * Math.random()); // Elige aleatoriamente la zona de riesgo
                 logger.escribir("El zombie " + getIdZombie() + " entra a la zona de riesgo " + rand1);
                 ZonaRiesgo zonaActual = arrayZonaRiesgo[rand1];
+
                 pausa.comprobarPausa();
-                zonaActual.entrarZombie(this);
+                zonaActual.entrarZombie(this); // Se añade a la lista de la zona de riesgo
                 pausa.comprobarPausa();
+
+                // Coge a un humano aleatoriamente
                 Humano huAtacado = zonaActual.devolverHumanoAleatorio(zonaActual);
                 pausa.comprobarPausa();
                 if(!(huAtacado == null)){
@@ -45,7 +52,8 @@ public class Zombie extends Thread implements Serializable {
                     atacar(huAtacado, zonaActual);
                     pausa.comprobarPausa();
                 }
-                sleep(2000 + (int) (1000 * Math.random()));
+                sleep(2000 + (int) (1000 * Math.random())); // Se espera en la zona de riesgo
+
                 pausa.comprobarPausa();
                 logger.escribir("El zombie " + getIdZombie() + " sale a la zona de riesgo " + rand1);
                 zonaActual.salirZombie(this);
@@ -91,7 +99,7 @@ public class Zombie extends Thread implements Serializable {
 
     public void matarHumano(Humano hu, ZonaRiesgo zonaActual) {
         pausa.comprobarPausa();
-        logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie() + " y ahora tambien es un zombie.");
+        logger.escribir("Humano " + hu.getIdHumanoStr() + " ha muerto a manos del zombie " + this.getIdZombie() + " en la zona " + zonaActual.getId() + "y ahora tambien es un zombie.");
         hu.morir();
     }
 

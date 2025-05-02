@@ -23,6 +23,10 @@ public class ZonaRiesgo implements Serializable {
         logger = log;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public ArrayList<Humano> getListaHumanos() {
         return listaHumanos;
     }
@@ -33,21 +37,10 @@ public class ZonaRiesgo implements Serializable {
 
     public void entrarHumano(Humano hu) {
         listaHumanos.add(hu);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ventana.actualizarHumanosZP(id);
-            }
-        });
-
     }
 
     public void salirHumano(Humano hu) {
         listaHumanos.remove(hu);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ventana.actualizarHumanosZP(id);
-            }
-        });
     }
 
     public void entrarZombie(Zombie zo) {
@@ -76,6 +69,11 @@ public class ZonaRiesgo implements Serializable {
             int rand2 = (int) (numHumanos * Math.random());
             Humano huAtacado = (Humano) zonaActual.getListaHumanos().get(rand2);
             zonaActual.getListaHumanos().remove(huAtacado);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ventana.actualizarHumanosZP(id);
+                }
+            });
             return huAtacado;
         }
     }
