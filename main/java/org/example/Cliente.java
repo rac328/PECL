@@ -13,12 +13,13 @@ import static java.lang.Thread.sleep;
 
 public class Cliente {
 
-    private VentanaCli ventana;
+    private VentanaCli ventana = new VentanaCli(this);
+    
     private boolean seguir = true;
     private Boolean parar = false;
 
     private Integer listaComedorRecibida;
-    private Integer listaZonacomunRecibida;
+    private Integer listaZonaComunRecibida;
     private Integer listaZonaDescansoRecibida;
 
     private Integer listaZonaRiesgoRecibida1;
@@ -46,8 +47,8 @@ public class Cliente {
     private Integer listaZombieZonaRiesgo3;
     private Integer listaZombieZonaRiesgo4;
 
-    public Cliente(VentanaCli vent) {
-        ventana = vent;
+    public Cliente() {
+        ventana.setVisible(true);
     }
 
 
@@ -69,7 +70,7 @@ public class Cliente {
                 //Listas de la zona segura
                 listaComedorRecibida = (Integer) ois.readObject();
                 System.out.println("Tamaño de la lista de comedor: " + listaComedorRecibida);
-                listaZonacomunRecibida = (Integer) ois.readObject();
+                listaZonaComunRecibida = (Integer) ois.readObject();
                 listaZonaDescansoRecibida = (Integer) ois.readObject();
 
                 //Listas de humanos en zonas de riesgo
@@ -102,10 +103,12 @@ public class Cliente {
                 listaZombieZonaRiesgo3 = (Integer) ois.readObject();
                 listaZombieZonaRiesgo4 = (Integer) ois.readObject();
 
-                cambiarEstadoParar();
-                sleep(15000);
+                //cambiarEstadoParar();
+                //sleep(10000);
+                
+                ventana.actualizarVentana();
             }
-        } catch (NullPointerException | IOException | ClassNotFoundException | InterruptedException e) {
+        } catch (NullPointerException | IOException | ClassNotFoundException e) {
             System.out.println("Error");
             throw new RuntimeException(e);
         }
@@ -128,8 +131,7 @@ public class Cliente {
     }
 
     public static void main(String args[]) {
-        VentanaCli ventana = new VentanaCli();
-        Cliente cliente = new Cliente(ventana);
+        Cliente cliente = new Cliente();
         new Thread(() -> cliente.conectarServ()).start();
     }
 
@@ -217,8 +219,8 @@ public class Cliente {
         return listaZonaDescansoRecibida;
     }
 
-    public Integer getListaZonacomunRecibida() {
-        return listaZonacomunRecibida;
+    public Integer getListaZonaComunRecibida() {
+        return listaZonaComunRecibida;
     }
 
     public Integer getListaComedorRecibida() {

@@ -4,17 +4,76 @@
  */
 package Visuals.ApocalipsisZombi;
 
+import javax.swing.DefaultListModel;
+import org.example.Cliente;
+import org.example.Humano;
+
 /**
  *
  * @author Alex
  */
 public class VentanaCli extends javax.swing.JFrame {
-
+    private Cliente cliente;
     /**
      * Creates new form VentanaCli
      */
-    public VentanaCli() {
+    public VentanaCli(Cliente cli) {
         initComponents();
+        cliente = cli;
+    }
+    
+    public void actualizarVentana(){
+        borrarValores();
+        actualizarValores();
+    }
+    public void borrarValores(){
+        jTextFieldHumanosRefugio.removeAll();
+        jTextFieldTunel1.removeAll();
+        jTextFieldTunel2.removeAll();
+        jTextFieldTunel3.removeAll();
+        jTextFieldTunel4.removeAll();
+        jTextFieldHumanosZR1.removeAll();
+        jTextFieldHumanosZR2.removeAll();
+        jTextFieldHumanosZR3.removeAll();
+        jTextFieldHumanosZR4.removeAll();
+        jTextFieldZombisZR1.removeAll();
+        jTextFieldZombisZR2.removeAll();
+        jTextFieldZombisZR3.removeAll();
+        jTextFieldZombisZR4.removeAll();
+        jList1.removeAll();  
+    }
+    
+    public void actualizarValores(){
+        //refugio
+        jTextFieldHumanosRefugio.setText(""+(cliente.getListaZonaComunRecibida()+cliente.getListaComedorRecibida()+cliente.getListaZonaDescansoRecibida()));
+        jTextFieldHumanosZComun.setText(""+cliente.getListaZonaComunRecibida());
+        jTextFieldHumanosZDescanso.setText(""+cliente.getListaZonaDescansoRecibida());
+        jTextFieldHumanosComedor.setText(""+cliente.getListaComedorRecibida());
+        
+        //tuneles
+        jTextFieldTunel1.setText(""+(cliente.getListaPasarTunelRecibida1()+cliente.getListaPasandoTunelRecibida1()+cliente.getListaRegresandoTunelRecibida1()));
+        jTextFieldTunel2.setText(""+(cliente.getListaPasarTunelRecibida2()+cliente.getListaPasandoTunelRecibida2()+cliente.getListaRegresandoTunelRecibida2()));
+        jTextFieldTunel3.setText(""+(cliente.getListaPasarTunelRecibida3()+cliente.getListaPasandoTunelRecibida3()+cliente.getListaRegresandoTunelRecibida3()));
+        jTextFieldTunel4.setText(""+(cliente.getListaPasarTunelRecibida4()+cliente.getListaPasandoTunelRecibida4()+cliente.getListaRegresandoTunelRecibida4()));
+        
+        //humanos zona riesgo
+        jTextFieldHumanosZR1.setText(""+cliente.getListaZonaRiesgoRecibida1());
+        jTextFieldHumanosZR2.setText(""+cliente.getListaZonaRiesgoRecibida2());
+        jTextFieldHumanosZR3.setText(""+cliente.getListaZonaRiesgoRecibida3());
+        jTextFieldHumanosZR4.setText(""+cliente.getListaZonaRiesgoRecibida4());
+        
+        //zombis zona riesgo
+        jTextFieldZombisZR1.setText(""+cliente.getListaZombieZonaRiesgo1());
+        jTextFieldZombisZR2.setText(""+cliente.getListaZombieZonaRiesgo2());
+        jTextFieldZombisZR3.setText(""+cliente.getListaZombieZonaRiesgo3());
+        jTextFieldZombisZR4.setText(""+cliente.getListaZombieZonaRiesgo4());
+        
+        //lista zombis mas mortales
+        //DefaultListModel<String> model = new DefaultListModel<>();
+        //for (int i = 0; i<listaRankingZombies.length(); i++) {
+        //        model.addElement(listaRankingZombies[i].getID() + " - " + listaRankingZombies[i].getMuertes());
+        //    }
+        //
     }
 
     /**
@@ -44,6 +103,20 @@ public class VentanaCli extends javax.swing.JFrame {
         jTextFieldZombisZR2 = new javax.swing.JTextField();
         jTextFieldZombisZR3 = new javax.swing.JTextField();
         jTextFieldZombisZR4 = new javax.swing.JTextField();
+        jTextFieldTunel2 = new javax.swing.JTextField();
+        jTextFieldTunel3 = new javax.swing.JTextField();
+        jTextFieldTunel4 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextFieldHumanosZComun = new javax.swing.JTextField();
+        jTextFieldHumanosZDescanso = new javax.swing.JTextField();
+        jTextFieldHumanosComedor = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -143,6 +216,68 @@ public class VentanaCli extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldTunel2.setEditable(false);
+        jTextFieldTunel2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTunel2ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldTunel3.setEditable(false);
+        jTextFieldTunel3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTunel3ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldTunel4.setEditable(false);
+        jTextFieldTunel4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTunel4ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("1");
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("2");
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("3");
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("4");
+
+        jTextFieldHumanosZComun.setEditable(false);
+        jTextFieldHumanosZComun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZComunActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosZDescanso.setEditable(false);
+        jTextFieldHumanosZDescanso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosZDescansoActionPerformed(evt);
+            }
+        });
+
+        jTextFieldHumanosComedor.setEditable(false);
+        jTextFieldHumanosComedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldHumanosComedorActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Z Común");
+
+        jLabel11.setText("Z Descanso");
+
+        jLabel12.setText("Comedor");
+
+        jLabel13.setText("Total");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,15 +292,22 @@ public class VentanaCli extends javax.swing.JFrame {
                             .addGap(187, 187, 187)
                             .addComponent(jToggleButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jTextFieldZombisZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldZombisZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jTextFieldHumanosZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
@@ -175,26 +317,69 @@ public class VentanaCli extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(jTextFieldHumanosZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jTextFieldZombisZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTextFieldZombisZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldTunel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTextFieldZombisZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldTunel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTextFieldZombisZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(70, Short.MAX_VALUE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextFieldTunel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jTextFieldHumanosZComun, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosZDescanso, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosComedor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel11)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel12)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel13)
+                            .addGap(7, 7, 7))))
+                .addGap(26, 70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldHumanosRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZComun, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosZDescanso, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldHumanosComedor, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTunel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTunel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTunel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTunel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,28 +387,33 @@ public class VentanaCli extends javax.swing.JFrame {
                     .addComponent(jTextFieldHumanosZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldHumanosZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldHumanosZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldZombisZR1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldZombisZR2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldZombisZR3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldZombisZR4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jToggleButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButtonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonPararActionPerformed
-        // TODO add your handling code here:
+        if (cliente.isPausado()){
+            jToggleButtonParar.setText("DETENER EJECUCIÓN");
+        }else{
+            jToggleButtonParar.setText("REANUDAR EJECUCIÓN");
+        }
+        cliente.cambiarEstadoParar();
     }//GEN-LAST:event_jToggleButtonPararActionPerformed
 
     private void jTextFieldTunel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel1ActionPerformed
@@ -266,55 +456,62 @@ public class VentanaCli extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldZombisZR4ActionPerformed
 
+    private void jTextFieldTunel2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTunel2ActionPerformed
+
+    private void jTextFieldTunel3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTunel3ActionPerformed
+
+    private void jTextFieldTunel4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTunel4ActionPerformed
+
+    private void jTextFieldHumanosZComunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZComunActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZComunActionPerformed
+
+    private void jTextFieldHumanosZDescansoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosZDescansoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosZDescansoActionPerformed
+
+    private void jTextFieldHumanosComedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHumanosComedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldHumanosComedorActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaCli.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaCli.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaCli.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaCli.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaCli().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextFieldHumanosComedor;
     private javax.swing.JTextField jTextFieldHumanosRefugio;
+    private javax.swing.JTextField jTextFieldHumanosZComun;
+    private javax.swing.JTextField jTextFieldHumanosZDescanso;
     private javax.swing.JTextField jTextFieldHumanosZR1;
     private javax.swing.JTextField jTextFieldHumanosZR2;
     private javax.swing.JTextField jTextFieldHumanosZR3;
     private javax.swing.JTextField jTextFieldHumanosZR4;
     private javax.swing.JTextField jTextFieldTunel1;
+    private javax.swing.JTextField jTextFieldTunel2;
+    private javax.swing.JTextField jTextFieldTunel3;
+    private javax.swing.JTextField jTextFieldTunel4;
     private javax.swing.JTextField jTextFieldZombisZR1;
     private javax.swing.JTextField jTextFieldZombisZR2;
     private javax.swing.JTextField jTextFieldZombisZR3;
