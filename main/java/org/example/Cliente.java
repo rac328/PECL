@@ -132,4 +132,96 @@ public class Cliente {
         Cliente cliente = new Cliente(ventana);
         new Thread(() -> cliente.conectarServ()).start();
     }
+
+    public Integer getListaZombieZonaRiesgo4() {
+        return listaZombieZonaRiesgo4;
+    }
+
+    public Integer getListaZombieZonaRiesgo3() {
+        return listaZombieZonaRiesgo3;
+    }
+
+    public Integer getListaZombieZonaRiesgo1() {
+        return listaZombieZonaRiesgo1;
+    }
+
+    public Integer getListaZombieZonaRiesgo2() {
+        return listaZombieZonaRiesgo2;
+    }
+
+    public Integer getListaRegresandoTunelRecibida4() {
+        return listaRegresandoTunelRecibida4;
+    }
+
+    public Integer getListaRegresandoTunelRecibida3() {
+        return listaRegresandoTunelRecibida3;
+    }
+
+    public Integer getListaRegresandoTunelRecibida2() {
+        return listaRegresandoTunelRecibida2;
+    }
+
+    public Integer getListaRegresandoTunelRecibida1() {
+        return listaRegresandoTunelRecibida1;
+    }
+
+    public Integer getListaPasandoTunelRecibida4() {
+        return listaPasandoTunelRecibida4;
+    }
+
+    public Integer getListaPasandoTunelRecibida3() {
+        return listaPasandoTunelRecibida3;
+    }
+
+    public Integer getListaPasandoTunelRecibida2() {
+        return listaPasandoTunelRecibida2;
+    }
+
+    public Integer getListaPasandoTunelRecibida1() {
+        return listaPasandoTunelRecibida1;
+    }
+
+    public Integer getListaPasarTunelRecibida4() {
+        return listaPasarTunelRecibida4;
+    }
+
+    public Integer getListaPasarTunelRecibida3() {
+        return listaPasarTunelRecibida3;
+    }
+
+    public Integer getListaPasarTunelRecibida2() {
+        return listaPasarTunelRecibida2;
+    }
+
+    public Integer getListaPasarTunelRecibida1() {
+        return listaPasarTunelRecibida1;
+    }
+
+    public Integer getListaZonaRiesgoRecibida4() {
+        return listaZonaRiesgoRecibida4;
+    }
+
+    public Integer getListaZonaRiesgoRecibida3() {
+        return listaZonaRiesgoRecibida3;
+    }
+
+    public Integer getListaZonaRiesgoRecibida2() {
+        return listaZonaRiesgoRecibida2;
+    }
+
+    public Integer getListaZonaRiesgoRecibida1() {
+        return listaZonaRiesgoRecibida1;
+    }
+
+    public Integer getListaZonaDescansoRecibida() {
+        return listaZonaDescansoRecibida;
+    }
+
+    public Integer getListaZonacomunRecibida() {
+        return listaZonacomunRecibida;
+    }
+
+    public Integer getListaComedorRecibida() {
+        return listaComedorRecibida;
+    }
 }
