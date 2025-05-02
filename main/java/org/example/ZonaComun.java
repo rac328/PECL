@@ -58,4 +58,6 @@ public class ZonaComun implements Serializable {
     public LinkedBlockingQueue<Humano> getListaHumanosZonaComun() {
         return listaHumanos;
     }
+
+
 }

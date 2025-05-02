@@ -14,7 +14,7 @@ import Visuals.ApocalipsisZombi.*;
 public class Comedor {
 
     private AtomicInteger comidaDisponible = new AtomicInteger(0);
-    private Semaphore comer = new Semaphore(1);
+    private Semaphore comer = new Semaphore(1, true);
     private ReentrantLock comidaEsperar = new ReentrantLock();
     private Condition noComida = comidaEsperar.newCondition();
     private VentanaServ ventana;
@@ -28,29 +28,18 @@ public class Comedor {
 
     public void depositarComida(Humano hu) {
         if (!hu.getMarcado() && !hu.isMuerto()) {
-            listaComedor.add(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarHumanosComedor();
-                }
-            });
+            hu.comprobarPausaHumano();
+            comidaDisponible.addAndGet(2); // Si todo ha ido bien depositan comida
 
-            comidaDisponible.addAndGet(2);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarComida();
-                }
-            });
             logger.escribir("El humano " + hu.getIdHumanoStr() + " ha traido 2 piezas de comida. Comida restante: " + comidaDisponible.toString());
-            comidaEsperar.lock();
-            noComida.signalAll();
-            comidaEsperar.unlock();
-            listaComedor.remove(hu);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ventana.actualizarHumanosComedor();
-                }
-            });
+            hu.comprobarPausaHumano();
+            comidaEsperar.lock(); //Toman el lock para realizar el signall
+            try {
+                noComida.signalAll(); // Al hacer el signal despiertan a los que estuvieran esperando por comida
+            }
+            finally {
+                comidaEsperar.unlock();
+            }
 
         }
     }
@@ -58,35 +47,43 @@ public class Comedor {
     public void comer(Humano hu) {
         if (!hu.isMuerto()) {
             try {
-                comer.acquire();
-                try {
-                    comidaEsperar.lock();
-                    listaComedor.add(hu);
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
+                hu.comprobarPausaHumano(); // Comprueba la pausa
+                listaComedor.add(hu); // Se añaden a la lista del comedor
+                SwingUtilities.invokeLater(new Runnable() { // Se actualiza la ventana
+                    public void run() {
                             ventana.actualizarHumanosComedor();
                         }
-                    });
+                });
 
-                    while (comidaDisponible.get() == 0) {
-                        logger.escribir("El humano " + hu.getIdHumanoStr() + " esta esperando para comer pero no hay comida.");
-                        noComida.await();
-                    }
-                    comidaDisponible.decrementAndGet();
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            ventana.actualizarComida();
-                        }
-                    });
-                    logger.escribir("El humano " + hu.getIdHumanoStr() + " esta comiendo. Comida restante: " + comidaDisponible.toString());
-                } finally {
+                comer.acquire(); // Toma el semáforo para la espera ordenada
+                comidaEsperar.lock(); //Se toma el lock para comprobar la comida
+                hu.comprobarPausaHumano(); // Comprueba la pausa
+                try {
+                    while (comidaDisponible.get() == 0) { // Comprueban si no hay comida para quedarse esperando
+                    logger.escribir("El humano " + hu.getIdHumanoStr() + " esta esperando para comer pero no hay comida.");
+                    noComida.await(); // Se queda esperando a que traigan comida
+                }
+                }finally {
                     comidaEsperar.unlock();
                 }
-                comer.release();
+                hu.comprobarPausaHumano();
+                comer.release(); // Dejan el semáforo para que pase el siguiente
+                comidaDisponible.decrementAndGet(); // Se decrementa en una unidad ya que comen
+                hu.comprobarPausaHumano();
 
-                sleep(3000 + (int) (2000 * Math.random()));
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                            ventana.actualizarComida();
+                        }
+                });
+                logger.escribir("El humano " + hu.getIdHumanoStr() + " esta comiendo. Comida restante: " + comidaDisponible.toString());
+
+                sleep(3000 + (int) (2000 * Math.random())); // Tiempo que tardan en comer
                 logger.escribir("El humano " + hu.getIdHumanoStr() + " ha terminado de comer.");
-                listaComedor.remove(hu);
+
+                listaComedor.remove(hu); // Se eliminan de la lista
+                hu.comprobarPausaHumano();
+
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         ventana.actualizarHumanosComedor();

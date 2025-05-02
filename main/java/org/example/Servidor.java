@@ -13,7 +13,7 @@ import Visuals.ApocalipsisZombi.*;
 public class Servidor {
 
     private boolean seguir = true;
-    private LinkedBlockingQueue<Humano> listaComedor = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<String> listaComedor = new LinkedBlockingQueue<>();
     private ServerSocket servidor;
     private Arranque arranque = new Arranque();
     private VentanaServ ventana;
@@ -31,8 +31,10 @@ public class Servidor {
             servidor = new ServerSocket(5002);
             System.out.println("Servidor Arrancando....");
             arranque.crearSimulacionSegundoPlano();
-            Socket cliente = servidor.accept();
-            conexionCliente(cliente);
+            while (true) {
+                Socket cliente = servidor.accept();
+                conexionCliente(cliente);
+            }
         }
         catch (IOException e) {
             System.out.println("Error al iniciar server");
@@ -61,63 +63,61 @@ public class Servidor {
                 }
 
                 //listas de la Zona Segura
-                LinkedBlockingQueue<Humano> listaComedor = arranque.getComedor().getListaHumanosComedor();
-                System.out.println(listaComedor.toString());
+                int listaComedor = arranque.getComedor().getListaHumanosComedor().size();
                 oos.writeObject(listaComedor);
-                LinkedBlockingQueue<Humano> listaZonaComun = arranque.getZonaComun().getListaHumanosZonaComun();
+                int listaZonaComun = arranque.getZonaComun().getListaHumanosZonaComun().size();
                 oos.writeObject(listaZonaComun);
-                LinkedBlockingQueue<Humano> listaZonaDescanso = arranque.getZonaDescanso().getListaHumanosDescansando();
+                int listaZonaDescanso = arranque.getZonaDescanso().getListaHumanosDescansando().size();
                 oos.writeObject(listaZonaDescanso);
 
                 //Listas de zonas de Riesgo
-                ArrayList<Humano> listaZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaHumanos();
+                int listaZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaHumanos().size();
                 oos.writeObject(listaZonaRiesgo1);
-                System.out.println(listaZonaRiesgo1.toString());
-                ArrayList<Humano> listaZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaHumanos();
+                int listaZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaHumanos().size();
                 oos.writeObject(listaZonaRiesgo2);
-                ArrayList<Humano> listaZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaHumanos();
+                int listaZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaHumanos().size();
                 oos.writeObject(listaZonaRiesgo3);
-                ArrayList<Humano> listaZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaHumanos();
+                int listaZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaHumanos().size();
                 oos.writeObject(listaZonaRiesgo4);
 
                 //Lista de humanos para pasar en los Túneles
-                LinkedBlockingQueue<Humano> listaPasarTunel1 = arranque.getArrayTunel()[0].getListaPasar();
+                int listaPasarTunel1 = arranque.getArrayTunel()[0].getListaPasar().size();
                 oos.writeObject(listaPasarTunel1);
-                LinkedBlockingQueue<Humano> listaPasarTunel2 = arranque.getArrayTunel()[1].getListaPasar();
+                int listaPasarTunel2 = arranque.getArrayTunel()[1].getListaPasar().size();
                 oos.writeObject(listaPasarTunel2);
-                LinkedBlockingQueue<Humano> listaPasarTunel3 = arranque.getArrayTunel()[2].getListaPasar();
+                int listaPasarTunel3 = arranque.getArrayTunel()[2].getListaPasar().size();
                 oos.writeObject(listaPasarTunel3);
-                LinkedBlockingQueue<Humano> listaPasarTunel4 = arranque.getArrayTunel()[3].getListaPasar();
+                int listaPasarTunel4 = arranque.getArrayTunel()[3].getListaPasar().size();
                 oos.writeObject(listaPasarTunel4);
 
                 //Listas de humanos pasando en cada momento por los túneles
-                LinkedBlockingQueue<Humano> listaPasandoTunel1 = arranque.getArrayTunel()[0].getListaPasando();
+                int listaPasandoTunel1 = arranque.getArrayTunel()[0].getListaPasando().size();
                 oos.writeObject(listaPasandoTunel1);
-                LinkedBlockingQueue<Humano> listaPasandoTunel2 = arranque.getArrayTunel()[1].getListaPasando();
+                int listaPasandoTunel2 = arranque.getArrayTunel()[1].getListaPasando().size();
                 oos.writeObject(listaPasandoTunel2);
-                LinkedBlockingQueue<Humano> listaPasandoTunel3 = arranque.getArrayTunel()[2].getListaPasando();
+                int listaPasandoTunel3 = arranque.getArrayTunel()[2].getListaPasando().size();
                 oos.writeObject(listaPasandoTunel3);
-                LinkedBlockingQueue<Humano> listaPasandoTunel4 = arranque.getArrayTunel()[3].getListaPasando();
+                int listaPasandoTunel4 = arranque.getArrayTunel()[3].getListaPasando().size();
                 oos.writeObject(listaPasandoTunel4);
 
                 //Listas de humanos regresando en cada tunel
-                LinkedBlockingQueue<Humano> listaRegresandoTunel1 = arranque.getArrayTunel()[0].getListaRegresar();
+                int listaRegresandoTunel1 = arranque.getArrayTunel()[0].getListaRegresar().size();
                 oos.writeObject(listaRegresandoTunel1);
-                LinkedBlockingQueue<Humano> listaRegresandoTunel2 = arranque.getArrayTunel()[1].getListaRegresar();
+                int listaRegresandoTunel2 = arranque.getArrayTunel()[1].getListaRegresar().size();
                 oos.writeObject(listaRegresandoTunel2);
-                LinkedBlockingQueue<Humano> listaRegresandoTunel3 = arranque.getArrayTunel()[2].getListaRegresar();
+                int listaRegresandoTunel3 = arranque.getArrayTunel()[2].getListaRegresar().size();
                 oos.writeObject(listaRegresandoTunel3);
-                LinkedBlockingQueue<Humano> listaRegresandoTunel4 = arranque.getArrayTunel()[3].getListaRegresar();
+                int listaRegresandoTunel4 = arranque.getArrayTunel()[3].getListaRegresar().size();
                 oos.writeObject(listaRegresandoTunel4);
 
                 //Listas de Zombies en cada zona de Riesgo
-                LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaZombies();
+                int listaZombieZonaRiesgo1 = arranque.getArrayZonaRiesgo()[0].getListaZombies().size();
                 oos.writeObject(listaZombieZonaRiesgo1);
-                LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaZombies();
+                int listaZombieZonaRiesgo2 = arranque.getArrayZonaRiesgo()[1].getListaZombies().size();
                 oos.writeObject(listaZombieZonaRiesgo2);
-                LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaZombies();
+                int listaZombieZonaRiesgo3 = arranque.getArrayZonaRiesgo()[2].getListaZombies().size();
                 oos.writeObject(listaZombieZonaRiesgo3);
-                LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaZombies();
+                int listaZombieZonaRiesgo4 = arranque.getArrayZonaRiesgo()[3].getListaZombies().size();
                 oos.writeObject(listaZombieZonaRiesgo4);
 
                 oos.flush();

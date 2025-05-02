@@ -16,34 +16,35 @@ public class Cliente {
     private VentanaCli ventana;
     private boolean seguir = true;
     private Boolean parar = false;
-    LinkedBlockingQueue<Humano> listaComedorRecibida;
-    LinkedBlockingQueue<Humano> listaZonacomunRecibida;
-    LinkedBlockingQueue<Humano> listaZonaDescansoRecibida;
 
-    ArrayList<Humano> listaZonaRiesgoRecibida1;
-    ArrayList<Humano> listaZonaRiesgoRecibida2;
-    ArrayList<Humano> listaZonaRiesgoRecibida3;
-    ArrayList<Humano> listaZonaRiesgoRecibida4;
+    private Integer listaComedorRecibida;
+    private Integer listaZonacomunRecibida;
+    private Integer listaZonaDescansoRecibida;
 
-    LinkedBlockingQueue<Humano> listaPasarTunelRecibida1;
-    LinkedBlockingQueue<Humano> listaPasarTunelRecibida2;
-    LinkedBlockingQueue<Humano> listaPasarTunelRecibida3;
-    LinkedBlockingQueue<Humano> listaPasarTunelRecibida4;
+    private Integer listaZonaRiesgoRecibida1;
+    private Integer listaZonaRiesgoRecibida2;
+    private Integer listaZonaRiesgoRecibida3;
+    private Integer listaZonaRiesgoRecibida4;
 
-    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida1;
-    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida2;
-    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida3;
-    LinkedBlockingQueue<Humano> listaPasandoTunelRecibida4;
+    private Integer listaPasarTunelRecibida1;
+    private Integer listaPasarTunelRecibida2;
+    private Integer listaPasarTunelRecibida3;
+    private Integer listaPasarTunelRecibida4;
 
-    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida1;
-    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida2;
-    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida3;
-    LinkedBlockingQueue<Humano> listaRegresandoTunelRecibida4;
+    private Integer listaPasandoTunelRecibida1;
+    private Integer listaPasandoTunelRecibida2;
+    private Integer listaPasandoTunelRecibida3;
+    private Integer listaPasandoTunelRecibida4;
 
-    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo1;
-    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo2;
-    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo3;
-    LinkedBlockingQueue<Zombie> listaZombieZonaRiesgo4;
+    private Integer listaRegresandoTunelRecibida1;
+    private Integer listaRegresandoTunelRecibida2;
+    private Integer listaRegresandoTunelRecibida3;
+    private Integer listaRegresandoTunelRecibida4;
+
+    private Integer listaZombieZonaRiesgo1;
+    private Integer listaZombieZonaRiesgo2;
+    private Integer listaZombieZonaRiesgo3;
+    private Integer listaZombieZonaRiesgo4;
 
     public Cliente(VentanaCli vent) {
         ventana = vent;
@@ -54,17 +55,10 @@ public class Cliente {
     public void conectarServ() {
         Socket cliente;
         try {
-            System.out.println("Hola");
             cliente = new Socket(InetAddress.getLocalHost(), 5002); // Conectar al servidor
-            System.out.println("Adios");
-
-
             ObjectInputStream ois = new ObjectInputStream(cliente.getInputStream());
-
-            System.out.println("Adios");
             ObjectOutputStream oos = new ObjectOutputStream(cliente.getOutputStream());
 
-            System.out.println("Adios");
             while (true) {
                 System.out.println(parar);
                 oos.writeObject(parar);
@@ -73,43 +67,40 @@ public class Cliente {
                 oos.reset();
 
                 //Listas de la zona segura
-                listaComedorRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                System.out.println(listaComedorRecibida.toString());
-                listaZonacomunRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaZonaDescansoRecibida = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaComedorRecibida = (Integer) ois.readObject();
+                System.out.println("Tamaño de la lista de comedor: " + listaComedorRecibida);
+                listaZonacomunRecibida = (Integer) ois.readObject();
+                listaZonaDescansoRecibida = (Integer) ois.readObject();
 
                 //Listas de humanos en zonas de riesgo
-                listaZonaRiesgoRecibida1 = (ArrayList<Humano>) ois.readObject();
-                if(listaZonaRiesgoRecibida1 != null) {
-                    System.out.println(listaZonaRiesgoRecibida1.toString());
-                }
-                listaZonaRiesgoRecibida2 = (ArrayList<Humano>) ois.readObject();
-                listaZonaRiesgoRecibida3 = (ArrayList<Humano>) ois.readObject();
-                listaZonaRiesgoRecibida4 = (ArrayList<Humano>) ois.readObject();
+                listaZonaRiesgoRecibida1 = (Integer) ois.readObject();
+                listaZonaRiesgoRecibida2 = (Integer) ois.readObject();
+                listaZonaRiesgoRecibida3 = (Integer) ois.readObject();
+                listaZonaRiesgoRecibida4 = (Integer) ois.readObject();
 
                 //Listas de humanos para pasar por los túneles
-                listaPasarTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasarTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasarTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasarTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasarTunelRecibida1 = (Integer) ois.readObject();
+                listaPasarTunelRecibida2 = (Integer) ois.readObject();
+                listaPasarTunelRecibida3 = (Integer) ois.readObject();
+                listaPasarTunelRecibida4 = (Integer) ois.readObject();
 
                 //Listas de humanos pasando por los tuneles
-                listaPasandoTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasandoTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasandoTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaPasandoTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaPasandoTunelRecibida1 = (Integer) ois.readObject();
+                listaPasandoTunelRecibida2 = (Integer) ois.readObject();
+                listaPasandoTunelRecibida3 = (Integer) ois.readObject();
+                listaPasandoTunelRecibida4 = (Integer) ois.readObject();
 
                 //Listas de humanos regresando por los tuneles
-                listaRegresandoTunelRecibida1 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaRegresandoTunelRecibida2 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaRegresandoTunelRecibida3 = (LinkedBlockingQueue<Humano>) ois.readObject();
-                listaRegresandoTunelRecibida4 = (LinkedBlockingQueue<Humano>) ois.readObject();
+                listaRegresandoTunelRecibida1 = (Integer) ois.readObject();
+                listaRegresandoTunelRecibida2 = (Integer) ois.readObject();
+                listaRegresandoTunelRecibida3 = (Integer) ois.readObject();
+                listaRegresandoTunelRecibida4 = (Integer) ois.readObject();
 
                 //Listas de Zombies en la zona de Riesgo
-                listaZombieZonaRiesgo1 = (LinkedBlockingQueue<Zombie>) ois.readObject();
-                listaZombieZonaRiesgo2 = (LinkedBlockingQueue<Zombie>) ois.readObject();
-                listaZombieZonaRiesgo3 = (LinkedBlockingQueue<Zombie>) ois.readObject();
-                listaZombieZonaRiesgo4 = (LinkedBlockingQueue<Zombie>) ois.readObject();
+                listaZombieZonaRiesgo1 = (Integer) ois.readObject();
+                listaZombieZonaRiesgo2 = (Integer) ois.readObject();
+                listaZombieZonaRiesgo3 = (Integer) ois.readObject();
+                listaZombieZonaRiesgo4 = (Integer) ois.readObject();
 
                 cambiarEstadoParar();
                 sleep(15000);

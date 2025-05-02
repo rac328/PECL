@@ -6,9 +6,9 @@ public class Zombie extends Thread implements Serializable {
 
     private int contadorMuertes = 0;
     private String[] id = new String[6];
-    private transient ZonaRiesgo[] arrayZonaRiesgo;
-    private transient Pausa pausa;
-    private transient Logger logger;
+    private ZonaRiesgo[] arrayZonaRiesgo;
+    private Pausa pausa;
+    private Logger logger;
 
     public Zombie(String[] identificador, ZonaRiesgo[] zr, Pausa pa, Logger log) {
         id = identificador;

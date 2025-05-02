@@ -8,15 +8,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Humano extends Thread implements Serializable {
 
     private String[] id = new String[5];
-    private transient boolean marcado = false;
-    private transient Comedor comedor;
-    private transient Tunel[] arrayTunel;
-    private transient ZonaDescanso zonaDescanso;
-    private transient ZonaComun zonaComun;
-    private transient boolean muerto = false;
-    private transient CyclicBarrier esperarAtaque = new CyclicBarrier(2);
-    private transient AtomicBoolean esperandoAtaque = new AtomicBoolean(false);
-    private transient Pausa pausa;
+    private boolean marcado = false;
+    private Comedor comedor;
+    private Tunel[] arrayTunel;
+    private ZonaDescanso zonaDescanso;
+    private ZonaComun zonaComun;
+    private boolean muerto = false;
+    private CyclicBarrier esperarAtaque = new CyclicBarrier(2);
+    private AtomicBoolean esperandoAtaque = new AtomicBoolean(false);
+    private Pausa pausa;
 
     public Humano(String[] identificador, Comedor come, Tunel[] at, ZonaComun zc, ZonaDescanso zd, Pausa pa) {
         id = identificador;
