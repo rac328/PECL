@@ -41,7 +41,7 @@ public class VentanaServ extends javax.swing.JFrame {
 
         jTextAreaHumanosDescanso.setText("");  // Limpiar el JTextArea
         for (Humano hu : arr.getZonaDescanso().getListaHumanosDescansando()) {
-            jTextAreaHumanosDescanso.append(", " + hu.getIdHumanoStr());
+            jTextAreaHumanosDescanso.append(hu.getIdHumanoStr()+" ");
         }
         jTextAreaHumanosDescanso.setCaretPosition(jTextAreaHumanosDescanso.getDocument().getLength());
     }

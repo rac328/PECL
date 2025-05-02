@@ -19,17 +19,28 @@ public class Ranking {
         listaCompleta.addAll(arrayZonaRiesgo[3].getListaZombies());
         listaCompleta.sort(porMuertes);
         ArrayList<String> listaMejores = new ArrayList<>(3);
-        if(listaCompleta.size()<4){
+        if(listaCompleta.size()==0){
             listaMejores.add("No hay muertos");
-            listaMejores.add("No hay muertos");
-            listaMejores.add(2, "No hay muertos");
+            listaMejores.add("");
+            listaMejores.add("");
             return listaMejores;
         }
-        else {
-            listaMejores.add(0, listaCompleta.get(0).getIdZombie() + " - " + listaCompleta.get(0).getContadorMuertes() + "muertes");
-            listaMejores.add(1, listaCompleta.get(1).getIdZombie() + " - " + listaCompleta.get(1).getContadorMuertes() + "muertes");
-            listaMejores.add(2, listaCompleta.get(2).getIdZombie() + " - " + listaCompleta.get(2).getContadorMuertes() + "muertes");
+        else if (listaCompleta.size()==1){
+            listaMejores.add(0, listaCompleta.get(0).getIdZombie() + " - " + listaCompleta.get(0).getContadorMuertes() + " muertes");
+            listaMejores.add("");
+            listaMejores.add("");
             return listaMejores;
+        }else if(listaCompleta.size()==2){
+            listaMejores.add(0, listaCompleta.get(0).getIdZombie() + " - " + listaCompleta.get(0).getContadorMuertes() + " muertes");
+            listaMejores.add(1, listaCompleta.get(1).getIdZombie() + " - " + listaCompleta.get(1).getContadorMuertes() + " muertes");
+            listaMejores.add("");
+            return listaMejores;
+        }else{
+            listaMejores.add(0, listaCompleta.get(0).getIdZombie() + " - " + listaCompleta.get(0).getContadorMuertes() + " muertes");
+            listaMejores.add(1, listaCompleta.get(1).getIdZombie() + " - " + listaCompleta.get(1).getContadorMuertes() + " muertes");
+            listaMejores.add(2, listaCompleta.get(2).getIdZombie() + " - " + listaCompleta.get(2).getContadorMuertes() + " muertes");
+            return listaMejores;
+
         }
     }
 }

@@ -72,10 +72,9 @@ public class VentanaCli extends javax.swing.JFrame {
         DefaultListModel<String> model = new DefaultListModel<>();
         jList1.removeAll();
         for (int i = 0; i<cliente.getListaMejoresZombies().size(); i++) {
-                model.add(0, "piola");
                 model.addElement(cliente.getListaMejoresZombies().get(i));
             }
-
+        jList1.setModel(model);
     }
 
     /**
