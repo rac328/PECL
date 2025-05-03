@@ -2,7 +2,7 @@ package org.example;
 
 import java.io.Serializable;
 
-public class Zombie extends Thread implements Serializable {
+public class Zombie extends Thread{
 
     private int contadorMuertes = 0;
     private String[] id = new String[6];

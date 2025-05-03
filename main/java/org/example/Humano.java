@@ -5,7 +5,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Humano extends Thread implements Serializable {
+public class Humano extends Thread{
 
     private String[] id = new String[5];
     private boolean marcado = false;

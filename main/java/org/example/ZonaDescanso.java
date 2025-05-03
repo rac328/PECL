@@ -6,7 +6,7 @@ import static java.lang.Thread.sleep;
 import javax.swing.SwingUtilities;
 import Visuals.ApocalipsisZombi.*;
 
-public class ZonaDescanso implements Serializable {
+public class ZonaDescanso{
 
     private LinkedBlockingQueue<Humano> listaDescansando = new LinkedBlockingQueue<>();
     private VentanaServ ventana;

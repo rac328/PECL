@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.SwingUtilities;
 import Visuals.ApocalipsisZombi.*;
 
-public class ZonaComun implements Serializable {
+public class ZonaComun{
 
     private Tunel[] arrayTunel;
     private LinkedBlockingQueue<Humano> listaHumanos = new LinkedBlockingQueue<>();

@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static java.lang.Thread.sleep;
 import javax.swing.SwingUtilities;
 
-public class Tunel implements Serializable {
+public class Tunel{
 
     private int id;
     private Semaphore esperarAntes = new Semaphore(3, true);

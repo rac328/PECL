@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.SwingUtilities;
 
-public class ZonaRiesgo implements Serializable {
+public class ZonaRiesgo{
 
     private LinkedBlockingQueue<Zombie> listaZombies = new LinkedBlockingQueue<>();
     private ArrayList<Humano> listaHumanos = new ArrayList<>();
