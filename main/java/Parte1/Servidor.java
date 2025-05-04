@@ -7,16 +7,12 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import Visuals.ApocalipsisZombi.*;
 
 public class Servidor {
 
-    private boolean seguir = true;
-    private LinkedBlockingQueue<String> listaComedor = new LinkedBlockingQueue<>();
+
     private ServerSocket servidor;
     private Arranque arranque = new Arranque();
-    private VentanaServ ventana;
     private Boolean parar = false;
 
     public Servidor() {

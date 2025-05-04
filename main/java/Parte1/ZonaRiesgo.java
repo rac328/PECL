@@ -1,11 +1,7 @@
 package Parte1;
 
 import Visuals.ApocalipsisZombi.VentanaServ;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.SwingUtilities;
 

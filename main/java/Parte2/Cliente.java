@@ -4,12 +4,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.Console.*;
-import java.util.concurrent.LinkedBlockingQueue;
 import Visuals.ApocalipsisZombi.*;
 
-import static java.lang.Thread.sleep;
 
 public class Cliente {
 

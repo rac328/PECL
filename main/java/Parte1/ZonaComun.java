@@ -2,7 +2,6 @@ package Parte1;
 
 import static java.lang.Thread.sleep;
 
-import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.SwingUtilities;
 import Visuals.ApocalipsisZombi.*;
