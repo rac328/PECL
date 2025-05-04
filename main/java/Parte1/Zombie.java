@@ -1,7 +1,5 @@
 package Parte1;
 
-import java.io.Serializable;
-
 public class Zombie extends Thread {
 
     private int contadorMuertes = 0;
@@ -81,13 +79,14 @@ public class Zombie extends Thread {
                 new Zombie(idZ, arrayZonaRiesgo, pausa, logger).start();
                 pausa.comprobarPausa();
                 contadorMuertes++;
+                hu.defensa();
             }
             else {
                 pausa.comprobarPausa();
                 logger.escribir("Humano " + hu.getIdHumanoStr() + " ha sido marcado por el zombie " + this.getIdZombie());
                 hu.setMarcado(true);
                 //El zombie realiza un await en la cyclic barrier para que el humano y el zombie sigan con la ejecución
-                hu.Defensa();
+                hu.defensa();
                 //El humano ya no está esperando para el ataque, lo marcamos a false
                 pausa.comprobarPausa();
                 hu.setEsperandoAtaque(false);

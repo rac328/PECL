@@ -1,7 +1,7 @@
 package Parte1;
 
 import Visuals.ApocalipsisZombi.VentanaServ;
-import java.io.Serializable;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -123,7 +123,7 @@ public class Tunel {
         } catch (InterruptedException | BrokenBarrierException e) {
             if (hu.getEsperandoAtaque()) {
                 System.out.println(hu.getIdHumanoStr() + " Está siendo atacado y puede morir.");
-                hu.Defensa();
+                hu.defensa();
             }
         }
     }

@@ -1,6 +1,5 @@
 package Parte1;
 
-import java.io.Serializable;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -71,7 +70,7 @@ public class Humano extends Thread {
         muerto = true;
     }
 
-    public void Defensa(){
+    public void defensa(){
         try {
             esperarAtaque.await();
         } catch (InterruptedException | BrokenBarrierException e) {
