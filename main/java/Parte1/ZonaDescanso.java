@@ -1,6 +1,5 @@
 package Parte1;
 
-import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingQueue;
 import static java.lang.Thread.sleep;
 import javax.swing.SwingUtilities;

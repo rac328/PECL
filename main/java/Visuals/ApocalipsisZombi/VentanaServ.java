@@ -1,21 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package Visuals.ApocalipsisZombi;
 
-import Parte1.ZonaComun;
 import Parte1.Humano;
-import Parte1.ZonaDescanso;
-import Parte1.Tunel;
 import Parte1.Zombie;
-import Parte1.Comedor;
-import Parte1.ZonaRiesgo;
 import Parte1.Arranque;
-import static java.lang.Thread.sleep;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.*;
 
 /**
@@ -25,18 +13,7 @@ import javax.swing.*;
 public class VentanaServ extends javax.swing.JFrame {
 
     private Arranque arr;
-    private ZonaDescanso zonaDescanso;
-    private ZonaComun zonaComun;
-    private Tunel[] arrayTunel;
-    private ZonaRiesgo[] arrayZonaRiesgo;
-    private Comedor comedor;
-    String[] idHumanos;
-    String[] idZombie;
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    /**
-     * Creates new form NewJFrame
-     */
     public VentanaServ(Arranque pArr) {
         setTitle("Apocalipsis Zombi");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

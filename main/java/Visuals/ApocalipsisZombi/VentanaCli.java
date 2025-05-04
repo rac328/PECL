@@ -6,7 +6,6 @@ package Visuals.ApocalipsisZombi;
 
 import javax.swing.DefaultListModel;
 import Parte2.Cliente;
-import Parte1.Humano;
 
 /**
  *
