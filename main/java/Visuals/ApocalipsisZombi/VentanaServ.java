@@ -4,7 +4,14 @@
  */
 package Visuals.ApocalipsisZombi;
 
-import org.example.*;
+import Parte1.ZonaComun;
+import Parte1.Humano;
+import Parte1.ZonaDescanso;
+import Parte1.Tunel;
+import Parte1.Zombie;
+import Parte1.Comedor;
+import Parte1.ZonaRiesgo;
+import Parte1.Arranque;
 import static java.lang.Thread.sleep;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
