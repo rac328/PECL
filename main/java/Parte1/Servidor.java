@@ -43,17 +43,12 @@ public class Servidor {
 
             while (true) {
 
-                System.out.println("PRIMERO " + parar);
-
                 parar = (Boolean) ois.readObject();
-                System.out.println("SEGUNDO " + parar);
 
                 if (parar) {
                     arranque.pausarEjecucion();
-                    System.out.println("dENTRO DEL IF: " + parar);
                 } else {
                     arranque.reanudarEjecucion();
-                    System.out.println("DENTRO DEL ELSE: " + parar);
                 }
 
                 //listas de la Zona Segura
@@ -115,11 +110,6 @@ public class Servidor {
                 oos.writeObject(listaZombieZonaRiesgo4);
 
                 ArrayList<String> listaMejoresZombies = arranque.getRanking().hacerRanking();
-                if (listaMejoresZombies != null && !listaMejoresZombies.isEmpty()) {
-                    System.out.println(listaMejoresZombies);
-                } else {
-                    System.out.println("La lista de mejores zombies está vacía o es nula.");
-                }
                 oos.writeObject(listaMejoresZombies);
 
                 oos.flush();
