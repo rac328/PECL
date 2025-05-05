@@ -5,6 +5,7 @@
 package Parte1;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,20 @@ import java.util.concurrent.Semaphore;
 public class Logger {
     private String FICHERO = "apocalipsis.txt"; 
     private Semaphore sem = new Semaphore(1, true); 
+    
+    public void inicializarArchivo() {
+        try {
+            File docLog = new File(FICHERO);
+            // si el archivo existe, se eliminamos
+            if (docLog.exists()) {
+                docLog.delete();
+            }
+            // crear el archivo nuevo
+            docLog.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Error al inicializar el archivo.");
+        }
+    }
     
     public void escribir(String msg){
         try{

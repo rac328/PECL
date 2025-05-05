@@ -26,6 +26,8 @@ public class Arranque {
     }
 
     private void iniciarSimulacion() {
+        
+        logger.inicializarArchivo();
 
         for (int i = 0; i < 4; i++) {
             arrayZonaRiesgo[i] = new ZonaRiesgo(i, logger, vent);
