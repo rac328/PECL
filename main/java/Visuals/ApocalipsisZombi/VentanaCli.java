@@ -7,8 +7,6 @@ package Visuals.ApocalipsisZombi;
 import javax.swing.DefaultListModel;
 import Parte2.Cliente;
 
-import static java.lang.Thread.sleep;
-
 /**
  *
  * @author Alex
@@ -417,7 +415,6 @@ public class VentanaCli extends javax.swing.JFrame {
         }
         cliente.cambiarEstadoParar();
         cliente.setTrueCambiarEstado();
-
     }//GEN-LAST:event_jToggleButtonPararActionPerformed
 
     private void jTextFieldTunel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel1ActionPerformed

@@ -33,10 +33,20 @@ public class ZonaRiesgo {
 
     public void entrarHumano(Humano hu) {
         listaHumanos.add(hu);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZP(id);
+            }
+        });
     }
 
     public void salirHumano(Humano hu) {
         listaHumanos.remove(hu);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ventana.actualizarHumanosZP(id);
+            }
+        });
     }
 
     public void entrarZombie(Zombie zo) {

@@ -138,10 +138,10 @@ public class VentanaServ extends javax.swing.JFrame {
         } else if (id == 1) {
             jListHumanosZona1.removeAll();
             DefaultListModel<String> model = new DefaultListModel<>();
-            for (Humano hu : arr.getArrayZonaRiesgo()[0].getListaHumanos()) {
+            for (Humano hu : arr.getArrayZonaRiesgo()[1].getListaHumanos()) {
                 model.addElement(hu.getIdHumanoStr());
             }
-            jListHumanosZona0.setModel(model);
+            jListHumanosZona1.setModel(model);
         } else if (id == 2) {
             jListHumanosZona2.removeAll();
             DefaultListModel<String> model = new DefaultListModel<>();
