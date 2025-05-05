@@ -107,5 +107,4 @@ public class Humano extends Thread {
         }
         System.out.println("Terminó el humano" + getIdHumanoStr());
     }
-
 }

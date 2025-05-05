@@ -65,7 +65,7 @@ public class Arranque {
                         contadorHumano++;
                         pausa.comprobarPausa();
                         try {
-                            sleep(500 + (int) (1 * Math.random()));
+                            sleep(500 + (int) (1500 * Math.random()));
                         } catch (InterruptedException ie) {
                             System.out.println("Error creando humano");
                         }
