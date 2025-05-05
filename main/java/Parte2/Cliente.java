@@ -120,14 +120,6 @@ public class Cliente {
         parar = !parar;
     }
 
-    public void pausarServidor() {
-       parar = true;
-    }
-
-    public void reanudarServidor() {
-       parar = true;
-    }
-
     public static void main(String args[]) {
         Cliente cliente = new Cliente();
         new Thread(() -> cliente.conectarServ()).start();
