@@ -13,6 +13,7 @@ public class Servidor {
     private ServerSocket servidor;
     private Arranque arranque = new Arranque();
     private Boolean parar = false;
+    private Boolean cambioEstado = false;
 
     public Servidor() {
     }
@@ -47,11 +48,13 @@ public class Servidor {
             while (true) {
 
                 parar = (Boolean) ois.readObject();
-
-                if (parar) {
-                    arranque.pausarEjecucion();
-                } else {
-                    arranque.reanudarEjecucion();
+                cambioEstado = (Boolean) ois.readObject();
+                if (cambioEstado) {
+                    if (parar) {
+                        arranque.pausarEjecucion();
+                    } else {
+                        arranque.reanudarEjecucion();
+                    }
                 }
 
                 //listas de la Zona Segura

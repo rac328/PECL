@@ -7,6 +7,8 @@ package Visuals.ApocalipsisZombi;
 import javax.swing.DefaultListModel;
 import Parte2.Cliente;
 
+import static java.lang.Thread.sleep;
+
 /**
  *
  * @author Alex
@@ -408,12 +410,14 @@ public class VentanaCli extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButtonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonPararActionPerformed
-        if (cliente.isPausado()){
-            jToggleButtonParar.setText("DETENER EJECUCIÓN");
+        if (cliente.getParar()){
+            jToggleButtonParar.setText("PARAR EJECUCIÓN");
         }else{
             jToggleButtonParar.setText("REANUDAR EJECUCIÓN");
         }
         cliente.cambiarEstadoParar();
+        cliente.setTrueCambiarEstado();
+
     }//GEN-LAST:event_jToggleButtonPararActionPerformed
 
     private void jTextFieldTunel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTunel1ActionPerformed

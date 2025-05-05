@@ -10,8 +10,8 @@ import Visuals.ApocalipsisZombi.*;
 public class Cliente {
 
     private VentanaCli ventana = new VentanaCli(this);
-    
-    private boolean seguir = true;
+
+    private Boolean cambioEstado = false;
     private Boolean parar = false;
 
     private Integer listaComedorRecibida;
@@ -58,15 +58,20 @@ public class Cliente {
             ObjectOutputStream oos = new ObjectOutputStream(cliente.getOutputStream());
 
             while (true) {
-                System.out.println(parar);
+
                 oos.writeObject(parar);
-                System.out.println(parar);
+                if(cambioEstado) {
+                    oos.writeObject(cambioEstado);
+                    setFalseCambiarEstado();
+                }
+                else{
+                    oos.writeObject(cambioEstado);
+                }
                 oos.flush();
                 oos.reset();
 
                 //Listas de la zona segura
                 listaComedorRecibida = (Integer) ois.readObject();
-                System.out.println("Tamaño de la lista de comedor: " + listaComedorRecibida);
                 listaZonaComunRecibida = (Integer) ois.readObject();
                 listaZonaDescansoRecibida = (Integer) ois.readObject();
 
@@ -102,7 +107,6 @@ public class Cliente {
 
                 //Mejores zombies
                 listaMejoresZombies = (ArrayList<String>) ois.readObject();
-                System.out.println(listaMejoresZombies);
 
                 ventana.actualizarVentana();
             }
@@ -112,12 +116,24 @@ public class Cliente {
         }
     }
 
-    public boolean isPausado() {
-        return !seguir;
+    public Boolean getCambioEstado() {
+        return cambioEstado;
+    }
+
+    public Boolean getParar() {
+        return parar;
     }
 
     public void cambiarEstadoParar() {
         parar = !parar;
+    }
+
+    public void setTrueCambiarEstado(){
+       cambioEstado = true;
+    }
+
+    public void setFalseCambiarEstado(){
+        cambioEstado = false;
     }
 
     public static void main(String args[]) {

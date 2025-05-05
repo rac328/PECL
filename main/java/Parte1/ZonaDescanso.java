@@ -29,6 +29,7 @@ public class ZonaDescanso {
                             ventana.actualizarHumanosDescansando();
                         }
                 });
+                hu.comprobarPausaHumano();
                 logger.escribir("Humano " + hu.getIdHumanoStr() + " está descansando tras volver del exterior.");
                 sleep(2000 + (int) (2000 * Math.random())); // Tiempo en el que está descansando
                 listaDescansando.remove(hu); // Sale de la lista de descansar
@@ -37,6 +38,7 @@ public class ZonaDescanso {
                             ventana.actualizarHumanosDescansando();
                         }
                 });
+                hu.comprobarPausaHumano();
                 logger.escribir("Humano " + hu.getIdHumanoStr() + " ha terminado de descansar.");
             } catch (InterruptedException ie) {
                 System.out.println("Error descansar al volver humano " + hu.getIdHumanoStr());
@@ -55,13 +57,13 @@ public class ZonaDescanso {
             });
 
             logger.escribir("Humano marcado " + hu.getIdHumanoStr() + " está descansando tras ser atacado para curarse.");
-
+            hu.comprobarPausaHumano(); // Se comprueba la pausa
             hu.setMarcado(false); // Se le quita la condición de marcado
 
             sleep(3000 + (int) (2000 * Math.random()));
 
             listaDescansando.remove(hu); // Sale de la lista de marcados
-
+            hu.comprobarPausaHumano();
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                         ventana.actualizarHumanosDescansando();
