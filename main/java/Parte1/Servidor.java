@@ -28,7 +28,11 @@ public class Servidor {
             arranque.crearSimulacionSegundoPlano();
             while (true) {
                 Socket cliente = servidor.accept();
-                conexionCliente(cliente);
+                try {
+                    conexionCliente(cliente);
+                } catch (Exception e) {
+                   System.out.println("Excepcion del servidor");
+                }
             }
         } catch (IOException e) {
             System.out.println("Error al iniciar server");

@@ -63,8 +63,9 @@ public class Arranque {
                         System.out.println(idHumanos[0] + idHumanos[1] + idHumanos[2] + idHumanos[3] + idHumanos[4]+idHumanos[5]);
                         new Humano(idHumanos.clone(), comedor, arrayTunel, zonaComun, zonaDescanso, pausa).start();
                         contadorHumano++;
+                        pausa.comprobarPausa();
                         try {
-                            sleep(500 + (int) (1500 * Math.random()));
+                            sleep(500 + (int) (1 * Math.random()));
                         } catch (InterruptedException ie) {
                             System.out.println("Error creando humano");
                         }

@@ -91,16 +91,18 @@ public class Humano extends Thread {
             zonaComun.prepararse(this);
             pausa.comprobarPausa();
             zonaComun.vidaFueraRefugio(this);
-            pausa.comprobarPausa();
-            comedor.depositarComida(this);
-            pausa.comprobarPausa();
-            zonaDescanso.descansarVuelta(this);
-            pausa.comprobarPausa();
-            comedor.comer(this);
-            pausa.comprobarPausa();
-            if (marcado) {
-                zonaDescanso.descansarMarcado(this);
+            if(!muerto){
                 pausa.comprobarPausa();
+                comedor.depositarComida(this);
+                pausa.comprobarPausa();
+                zonaDescanso.descansarVuelta(this);
+                pausa.comprobarPausa();
+                comedor.comer(this);
+                pausa.comprobarPausa();
+                if (marcado) {
+                    zonaDescanso.descansarMarcado(this);
+                    pausa.comprobarPausa();
+                }
             }
         }
         System.out.println("Terminó el humano" + getIdHumanoStr());

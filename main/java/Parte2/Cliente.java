@@ -103,7 +103,6 @@ public class Cliente {
                 //Mejores zombies
                 listaMejoresZombies = (ArrayList<String>) ois.readObject();
                 System.out.println(listaMejoresZombies);
-                //cambiarEstadoParar();
                 //sleep(10000);
 
                 ventana.actualizarVentana();
